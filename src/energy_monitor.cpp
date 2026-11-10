@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <esp_timer.h>
+#include <esp_log.h>
 
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_accumulators = {};
 
