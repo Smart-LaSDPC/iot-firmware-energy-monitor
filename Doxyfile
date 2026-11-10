@@ -1,0 +1,14 @@
+PROJECT_NAME           = "iot-firmware-energy-monitor"
+PROJECT_BRIEF          = "Monitor de energia com INA226 para firmwares ESP32"
+OUTPUT_LANGUAGE        = Brazilian
+OUTPUT_DIRECTORY       = doxygen
+
+INPUT                  = README.md include src
+FILE_PATTERNS          = *.h *.cpp
+USE_MDFILE_AS_MAINPAGE = README.md
+
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HAVE_DOT               = NO
+EXTRACT_ALL            = NO
+WARN_IF_UNDOCUMENTED   = YES

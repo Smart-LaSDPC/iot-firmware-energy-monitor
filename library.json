@@ -1,0 +1,24 @@
+{
+  "name": "iot-firmware-energy-monitor",
+  "version": "1.0.0",
+  "description": "A library for measuring energy, average current, average voltage and charge with an INA226 on ESP32 IoT firmwares.",
+  "keywords": ["energy", "current", "voltage", "ina226", "freertos", "esp32", "iot"],
+  "build": {
+    "srcDir": "src"
+  },
+  "authors": [
+    {
+      "name": "XandGVaz",
+      "url": "https://github.com/XandGVaz"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Smart-LaSDPC/iot-firmware-energy-monitor.git"
+  },
+  "dependencies": {
+    "robtillaart/INA226": "^0.6.6"
+  },
+  "frameworks": "arduino",
+  "platforms": "espressif32"
+}
