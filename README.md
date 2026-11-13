@@ -52,4 +52,4 @@ Definida nas constantes privadas de [include/energy_monitor.h](include/energy_mo
 
 - [robtillaart/INA226](https://github.com/RobTillaart/INA226) `^0.6.6`
 
-Exemplo completo em [examples/basic](examples/basic/basic.cpp). A documentação Doxygen é gerada com `doxygen Doxyfile`.
+Exemplo completo em [examples/basic](examples/basic/basic.cpp). A documentação Doxygen está em <https://smart-lasdpc.github.io/iot-firmware-energy-monitor/>, publicada pelo workflow `Doxygen` a cada push na `main`. Para gerar localmente, rode `doxygen Doxyfile` na raiz da biblioteca; as páginas ficam em `doxygen/html`, que é versionada.

@@ -1,0 +1,294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>iot-firmware-energy-monitor: Referência da Classe EnergyMonitor</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">iot-firmware-energy-monitor
+   </div>
+   <div id="projectbrief">Monitor de energia com INA226 para firmwares ESP32</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Busca');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrado</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Componentes</a> &#124;
+<a href="#pub-methods">Membros Públicos</a> &#124;
+<a href="#pub-static-methods">Membros públicos estáticos</a> &#124;
+<a href="classEnergyMonitor-members.html">Lista de todos os Membros</a>  </div>
+  <div class="headertitle"><div class="title">Referência da Classe EnergyMonitor</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Lê o INA226 periodicamente em uma task de prioridade 1 e acumula as medidas da janela atual, que vai do último reset até a leitura.  
+ <a href="classEnergyMonitor.html#details">Mais...</a></p>
+
+<p><code>#include &lt;<a class="el" href="energy__monitor_8h_source.html">energy_monitor.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Componentes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEnergyMonitor_1_1Measure.html">Measure</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Medidas de uma janela.  <a href="structEnergyMonitor_1_1Measure.html#details">Mais...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Membros Públicos</h2></td></tr>
+<tr class="memitem:a76834c90f2ab02e2c7b46749880c097f" id="r_a76834c90f2ab02e2c7b46749880c097f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#a76834c90f2ab02e2c7b46749880c097f">EnergyMonitor</a> (int pinSda, int pinScl, uint8_t address=0x40, TwoWire &amp;wire=Wire)</td></tr>
+<tr class="memdesc:a76834c90f2ab02e2c7b46749880c097f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define os pinos e o endereço do INA226. O barramento, o sensor e a task só são iniciados em <a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4" title="Inicia o barramento I2C, configura o INA226 e cria o mutex e a task de medição.">begin()</a>.  <br /></td></tr>
+<tr class="separator:a76834c90f2ab02e2c7b46749880c097f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50d91a2b570fcf4b934e44cd4c647712" id="r_a50d91a2b570fcf4b934e44cd4c647712"><td class="memItemLeft" align="right" valign="top"><a id="a50d91a2b570fcf4b934e44cd4c647712" name="a50d91a2b570fcf4b934e44cd4c647712"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>~EnergyMonitor</b> ()</td></tr>
+<tr class="memdesc:a50d91a2b570fcf4b934e44cd4c647712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encerra a task de medição e libera o mutex. <br /></td></tr>
+<tr class="separator:a50d91a2b570fcf4b934e44cd4c647712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39a856999495b1bb7399eb0bd51cdcd4" id="r_a39a856999495b1bb7399eb0bd51cdcd4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4">begin</a> ()</td></tr>
+<tr class="memdesc:a39a856999495b1bb7399eb0bd51cdcd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inicia o barramento I2C, configura o INA226 e cria o mutex e a task de medição.  <br /></td></tr>
+<tr class="separator:a39a856999495b1bb7399eb0bd51cdcd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec631a53d59ea015ec2f2ecdced23834" id="r_aec631a53d59ea015ec2f2ecdced23834"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834">getMeasure</a> (<a class="el" href="structEnergyMonitor_1_1Measure.html">Measure</a> &amp;measure, bool resetWindow=true)</td></tr>
+<tr class="memdesc:aec631a53d59ea015ec2f2ecdced23834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê as medidas da janela atual.  <br /></td></tr>
+<tr class="separator:aec631a53d59ea015ec2f2ecdced23834"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad606f72119b8891e0ace1049a1b8ef1e" id="r_ad606f72119b8891e0ace1049a1b8ef1e"><td class="memItemLeft" align="right" valign="top"><a id="ad606f72119b8891e0ace1049a1b8ef1e" name="ad606f72119b8891e0ace1049a1b8ef1e"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getEnergy</b> ()</td></tr>
+<tr class="memdesc:ad606f72119b8891e0ace1049a1b8ef1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Energia consumida na janela atual, em J, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:ad606f72119b8891e0ace1049a1b8ef1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c15dc93174327f90c7bd580b74fca8" id="r_a82c15dc93174327f90c7bd580b74fca8"><td class="memItemLeft" align="right" valign="top"><a id="a82c15dc93174327f90c7bd580b74fca8" name="a82c15dc93174327f90c7bd580b74fca8"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getAverageCurrent</b> ()</td></tr>
+<tr class="memdesc:a82c15dc93174327f90c7bd580b74fca8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrente média da janela atual, em mA, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:a82c15dc93174327f90c7bd580b74fca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7572ca37052677776e886d0b523c0708" id="r_a7572ca37052677776e886d0b523c0708"><td class="memItemLeft" align="right" valign="top"><a id="a7572ca37052677776e886d0b523c0708" name="a7572ca37052677776e886d0b523c0708"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getAverageVoltage</b> ()</td></tr>
+<tr class="memdesc:a7572ca37052677776e886d0b523c0708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tensão média da janela atual, em V, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:a7572ca37052677776e886d0b523c0708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf280faf1d749923b7df110de2e12749" id="r_abf280faf1d749923b7df110de2e12749"><td class="memItemLeft" align="right" valign="top"><a id="abf280faf1d749923b7df110de2e12749" name="abf280faf1d749923b7df110de2e12749"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getAccumulatedCharge</b> ()</td></tr>
+<tr class="memdesc:abf280faf1d749923b7df110de2e12749"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrente acumulada na janela atual, em mAh, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:abf280faf1d749923b7df110de2e12749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7099270005da09012253e640a173c29a" id="r_a7099270005da09012253e640a173c29a"><td class="memItemLeft" align="right" valign="top"><a id="a7099270005da09012253e640a173c29a" name="a7099270005da09012253e640a173c29a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>resetMeasure</b> ()</td></tr>
+<tr class="memdesc:a7099270005da09012253e640a173c29a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zera os acumuladores e inicia uma nova janela. <br /></td></tr>
+<tr class="separator:a7099270005da09012253e640a173c29a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Membros públicos estáticos</h2></td></tr>
+<tr class="memitem:a5e65c54fc2c387a9220273d521f14daf" id="r_a5e65c54fc2c387a9220273d521f14daf"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#a5e65c54fc2c387a9220273d521f14daf">vTaskMeasureLoop</a> (void *pvParameters)</td></tr>
+<tr class="memdesc:a5e65c54fc2c387a9220273d521f14daf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task que, a cada período, lê corrente e tensão do INA226 quando há conversão pronta e integra as amostras no tempo decorrido desde a anterior.  <br /></td></tr>
+<tr class="separator:a5e65c54fc2c387a9220273d521f14daf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
+<div class="textblock"><p>Lê o INA226 periodicamente em uma task de prioridade 1 e acumula as medidas da janela atual, que vai do último reset até a leitura. </p>
+<p>Os acumuladores ficam na memória RTC, então a janela sobrevive ao deep sleep. Por isso só uma instância deve existir: todas compartilham os mesmos acumuladores. </p>
+</div><h2 class="groupheader">Construtores e Destrutores</h2>
+<a id="a76834c90f2ab02e2c7b46749880c097f" name="a76834c90f2ab02e2c7b46749880c097f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76834c90f2ab02e2c7b46749880c097f">&#9670;&#160;</a></span>EnergyMonitor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">EnergyMonitor::EnergyMonitor </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pinSda</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pinScl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em> = <code>0x40</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TwoWire &amp;&#160;</td>
+          <td class="paramname"><em>wire</em> = <code>Wire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Define os pinos e o endereço do INA226. O barramento, o sensor e a task só são iniciados em <a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4" title="Inicia o barramento I2C, configura o INA226 e cria o mutex e a task de medição.">begin()</a>. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pinSda</td><td>Pino SDA do barramento I2C. </td></tr>
+    <tr><td class="paramname">pinScl</td><td>Pino SCL do barramento I2C. </td></tr>
+    <tr><td class="paramname">address</td><td>Endereço I2C do INA226. </td></tr>
+    <tr><td class="paramname">wire</td><td>Barramento I2C usado pelo sensor. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Documentação das funções</h2>
+<a id="a39a856999495b1bb7399eb0bd51cdcd4" name="a39a856999495b1bb7399eb0bd51cdcd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39a856999495b1bb7399eb0bd51cdcd4">&#9670;&#160;</a></span>begin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EnergyMonitor::begin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Inicia o barramento I2C, configura o INA226 e cria o mutex e a task de medição. </p>
+<p>Pode ser chamado de novo após uma falha: o que já foi criado é reaproveitado.</p>
+<dl class="section return"><dt>Retorna</dt><dd>true se a inicialização foi concluída; false se o barramento ou o sensor não responderam, ou se faltou memória para o mutex ou para a task. </dd></dl>
+
+</div>
+</div>
+<a id="aec631a53d59ea015ec2f2ecdced23834" name="aec631a53d59ea015ec2f2ecdced23834"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec631a53d59ea015ec2f2ecdced23834">&#9670;&#160;</a></span>getMeasure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool EnergyMonitor::getMeasure </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structEnergyMonitor_1_1Measure.html">Measure</a> &amp;&#160;</td>
+          <td class="paramname"><em>measure</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>resetWindow</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lê as medidas da janela atual. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">measure</td><td>Recebe as medidas da janela. </td></tr>
+    <tr><td class="paramname">resetWindow</td><td>Se true, zera os acumuladores e inicia uma nova janela. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Retorna</dt><dd>true se as medidas foram lidas; false se <a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4" title="Inicia o barramento I2C, configura o INA226 e cria o mutex e a task de medição.">begin()</a> não foi concluído. </dd></dl>
+
+</div>
+</div>
+<a id="a5e65c54fc2c387a9220273d521f14daf" name="a5e65c54fc2c387a9220273d521f14daf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e65c54fc2c387a9220273d521f14daf">&#9670;&#160;</a></span>vTaskMeasureLoop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EnergyMonitor::vTaskMeasureLoop </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>pvParameters</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Task que, a cada período, lê corrente e tensão do INA226 quando há conversão pronta e integra as amostras no tempo decorrido desde a anterior. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pvParameters</td><td>Instância de <a class="el" href="classEnergyMonitor.html" title="Lê o INA226 periodicamente em uma task de prioridade 1 e acumula as medidas da janela atual,...">EnergyMonitor</a> que criou a task. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>A documentação para essa classe foi gerada a partir dos seguintes arquivos:<ul>
+<li>include/<a class="el" href="energy__monitor_8h_source.html">energy_monitor.h</a></li>
+<li>src/<b>energy_monitor.cpp</b></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

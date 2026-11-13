@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>iot-firmware-energy-monitor: Código-Fonte de include/energy_monitor.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">iot-firmware-energy-monitor
+   </div>
+   <div id="projectbrief">Monitor de energia com INA226 para firmwares ESP32</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Busca');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrado</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">energy_monitor.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="energy__monitor_8h.html">Ir para a documentação desse arquivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;Arduino.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;Wire.h&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;INA226.h&gt;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &lt;freertos/FreeRTOS.h&gt;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;freertos/task.h&gt;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &lt;freertos/semphr.h&gt;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="classEnergyMonitor.html">   22</a></span><span class="keyword">class </span><a class="code hl_class" href="classEnergyMonitor.html">EnergyMonitor</a> {</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="structEnergyMonitor_1_1Measure.html">   25</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structEnergyMonitor_1_1Measure.html">Measure</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structEnergyMonitor_1_1Measure.html#a3d27bacb15999b809e29bb01fecd44ed">   26</a></span>        <span class="keywordtype">float</span> <a class="code hl_variable" href="structEnergyMonitor_1_1Measure.html#a3d27bacb15999b809e29bb01fecd44ed">energy</a>;               </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structEnergyMonitor_1_1Measure.html#a398bde10efefebf04c66125934c64863">   27</a></span>        <span class="keywordtype">float</span> <a class="code hl_variable" href="structEnergyMonitor_1_1Measure.html#a398bde10efefebf04c66125934c64863">averageCurrent</a>;       </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structEnergyMonitor_1_1Measure.html#ac24b2cd339ac3731694c43e94addcbc1">   28</a></span>        <span class="keywordtype">float</span> <a class="code hl_variable" href="structEnergyMonitor_1_1Measure.html#ac24b2cd339ac3731694c43e94addcbc1">averageVoltage</a>;       </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="structEnergyMonitor_1_1Measure.html#aa4eb28be35597eb8a091dbb45a3df1b5">   29</a></span>        <span class="keywordtype">float</span> <a class="code hl_variable" href="structEnergyMonitor_1_1Measure.html#aa4eb28be35597eb8a091dbb45a3df1b5">accumulatedCharge</a>;    </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="structEnergyMonitor_1_1Measure.html#a24618f0a09628fed02bbd4d09b29da4e">   30</a></span>        <span class="keywordtype">float</span> <a class="code hl_variable" href="structEnergyMonitor_1_1Measure.html#a24618f0a09628fed02bbd4d09b29da4e">elapsedTime</a>;          </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    };</div>
+</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <a class="code hl_class" href="classEnergyMonitor.html">EnergyMonitor</a>(<span class="keywordtype">int</span> pinSda, <span class="keywordtype">int</span> pinScl, uint8_t address = 0x40, TwoWire&amp; wire = Wire);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <a class="code hl_function" href="classEnergyMonitor.html#a50d91a2b570fcf4b934e44cd4c647712">~EnergyMonitor</a>();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4">begin</a>();</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834">getMeasure</a>(<a class="code hl_struct" href="structEnergyMonitor_1_1Measure.html">Measure</a>&amp; measure, <span class="keywordtype">bool</span> resetWindow = <span class="keyword">true</span>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classEnergyMonitor.html#ad606f72119b8891e0ace1049a1b8ef1e">getEnergy</a>();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classEnergyMonitor.html#a82c15dc93174327f90c7bd580b74fca8">getAverageCurrent</a>();</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classEnergyMonitor.html#a7572ca37052677776e886d0b523c0708">getAverageVoltage</a>();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordtype">float</span> <a class="code hl_function" href="classEnergyMonitor.html#abf280faf1d749923b7df110de2e12749">getAccumulatedCharge</a>();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classEnergyMonitor.html#a7099270005da09012253e640a173c29a">resetMeasure</a>();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classEnergyMonitor.html#a5e65c54fc2c387a9220273d521f14daf">vTaskMeasureLoop</a>(<span class="keywordtype">void</span>* pvParameters);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* LogTag = <span class="stringliteral">&quot;EnergyMonitor&quot;</span>;</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> ShuntResistanceOhm = 0.1f;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">float</span> CurrentLsbMa = 25e-3f;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t I2cFrequency = 400000;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t MeasurePeriodMs = 10;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t MeasureTaskStackSize = configMINIMAL_STACK_SIZE + 1024 * 2;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> UBaseType_t MeasureTaskPriority = 1;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">double</span> SecondsPerHour = 3600.0;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">struct </span>MeasureAccumulators {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordtype">double</span> energy;          </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keywordtype">double</span> charge;          </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordtype">double</span> voltageTime;     </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keywordtype">double</span> time;            </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    };</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keyword">static</span> MeasureAccumulators _accumulators; <span class="comment">// Permanece na memória RTC para sobreviver ao deep sleep</span></div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">bool</span> readMeasure(Measure&amp; measure, <span class="keywordtype">bool</span> resetWindow);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    INA226 _sensor;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    TwoWire&amp; _wire;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    <span class="keywordtype">int</span> _pinSda = 0;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keywordtype">int</span> _pinScl = 0;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    <span class="keywordtype">bool</span> _beginCalled = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    TaskHandle_t _measureTaskHandle = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    SemaphoreHandle_t _measureMutex = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>};</div>
+</div>
+<div class="ttc" id="aclassEnergyMonitor_html"><div class="ttname"><a href="classEnergyMonitor.html">EnergyMonitor</a></div><div class="ttdoc">Lê o INA226 periodicamente em uma task de prioridade 1 e acumula as medidas da janela atual,...</div><div class="ttdef"><b>Definição</b> energy_monitor.h:22</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_a39a856999495b1bb7399eb0bd51cdcd4"><div class="ttname"><a href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4">EnergyMonitor::begin</a></div><div class="ttdeci">bool begin()</div><div class="ttdoc">Inicia o barramento I2C, configura o INA226 e cria o mutex e a task de medição.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:26</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_a50d91a2b570fcf4b934e44cd4c647712"><div class="ttname"><a href="classEnergyMonitor.html#a50d91a2b570fcf4b934e44cd4c647712">EnergyMonitor::~EnergyMonitor</a></div><div class="ttdeci">~EnergyMonitor()</div><div class="ttdoc">Encerra a task de medição e libera o mutex.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:15</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_a5e65c54fc2c387a9220273d521f14daf"><div class="ttname"><a href="classEnergyMonitor.html#a5e65c54fc2c387a9220273d521f14daf">EnergyMonitor::vTaskMeasureLoop</a></div><div class="ttdeci">static void vTaskMeasureLoop(void *pvParameters)</div><div class="ttdoc">Task que, a cada período, lê corrente e tensão do INA226 quando há conversão pronta e integra as amos...</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:154</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_a7099270005da09012253e640a173c29a"><div class="ttname"><a href="classEnergyMonitor.html#a7099270005da09012253e640a173c29a">EnergyMonitor::resetMeasure</a></div><div class="ttdeci">void resetMeasure()</div><div class="ttdoc">Zera os acumuladores e inicia uma nova janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:129</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_a7572ca37052677776e886d0b523c0708"><div class="ttname"><a href="classEnergyMonitor.html#a7572ca37052677776e886d0b523c0708">EnergyMonitor::getAverageVoltage</a></div><div class="ttdeci">float getAverageVoltage()</div><div class="ttdoc">Tensão média da janela atual, em V, sem iniciar uma nova janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:119</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_a82c15dc93174327f90c7bd580b74fca8"><div class="ttname"><a href="classEnergyMonitor.html#a82c15dc93174327f90c7bd580b74fca8">EnergyMonitor::getAverageCurrent</a></div><div class="ttdeci">float getAverageCurrent()</div><div class="ttdoc">Corrente média da janela atual, em mA, sem iniciar uma nova janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:114</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_abf280faf1d749923b7df110de2e12749"><div class="ttname"><a href="classEnergyMonitor.html#abf280faf1d749923b7df110de2e12749">EnergyMonitor::getAccumulatedCharge</a></div><div class="ttdeci">float getAccumulatedCharge()</div><div class="ttdoc">Corrente acumulada na janela atual, em mAh, sem iniciar uma nova janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:124</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_ad606f72119b8891e0ace1049a1b8ef1e"><div class="ttname"><a href="classEnergyMonitor.html#ad606f72119b8891e0ace1049a1b8ef1e">EnergyMonitor::getEnergy</a></div><div class="ttdeci">float getEnergy()</div><div class="ttdoc">Energia consumida na janela atual, em J, sem iniciar uma nova janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:109</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html_aec631a53d59ea015ec2f2ecdced23834"><div class="ttname"><a href="classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834">EnergyMonitor::getMeasure</a></div><div class="ttdeci">bool getMeasure(Measure &amp;measure, bool resetWindow=true)</div><div class="ttdoc">Lê as medidas da janela atual.</div><div class="ttdef"><b>Definição</b> energy_monitor.cpp:95</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html">EnergyMonitor::Measure</a></div><div class="ttdoc">Medidas de uma janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:25</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html_a24618f0a09628fed02bbd4d09b29da4e"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html#a24618f0a09628fed02bbd4d09b29da4e">EnergyMonitor::Measure::elapsedTime</a></div><div class="ttdeci">float elapsedTime</div><div class="ttdoc">Duração da janela, em s.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:30</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html_a398bde10efefebf04c66125934c64863"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html#a398bde10efefebf04c66125934c64863">EnergyMonitor::Measure::averageCurrent</a></div><div class="ttdeci">float averageCurrent</div><div class="ttdoc">Corrente média, em mA. NaN se a janela não tem amostras.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:27</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html_a3d27bacb15999b809e29bb01fecd44ed"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html#a3d27bacb15999b809e29bb01fecd44ed">EnergyMonitor::Measure::energy</a></div><div class="ttdeci">float energy</div><div class="ttdoc">Energia consumida, em J.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:26</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html_aa4eb28be35597eb8a091dbb45a3df1b5"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html#aa4eb28be35597eb8a091dbb45a3df1b5">EnergyMonitor::Measure::accumulatedCharge</a></div><div class="ttdeci">float accumulatedCharge</div><div class="ttdoc">Corrente acumulada, em mAh.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:29</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html_ac24b2cd339ac3731694c43e94addcbc1"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html#ac24b2cd339ac3731694c43e94addcbc1">EnergyMonitor::Measure::averageVoltage</a></div><div class="ttdeci">float averageVoltage</div><div class="ttdoc">Tensão média do barramento, em V. NaN se a janela não tem amostras.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:28</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

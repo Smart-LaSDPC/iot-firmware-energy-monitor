@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>iot-firmware-energy-monitor: iot-firmware-energy-monitor</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">iot-firmware-energy-monitor
+   </div>
+   <div id="projectbrief">Monitor de energia com INA226 para firmwares ESP32</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Busca');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrado</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">iot-firmware-energy-monitor </div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="md_README"></a> Monitor de energia para firmwares ESP32 com o sensor INA226. Uma task interna, de prioridade 1 e fixada no <code>PRO_CPU</code>, lê corrente e tensão a cada 10 ms e integra as amostras no tempo. A cada leitura, o monitor entrega as medidas da janela, que vai do último reset até a leitura:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Medida   </th><th class="markdownTableHeadNone">Unidade   </th><th class="markdownTableHeadNone">Cálculo    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>energy</code>   </td><td class="markdownTableBodyNone">J   </td><td class="markdownTableBodyNone">∫ V·I dt    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>averageCurrent</code>   </td><td class="markdownTableBodyNone">mA   </td><td class="markdownTableBodyNone">∫ I dt / T    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>averageVoltage</code>   </td><td class="markdownTableBodyNone">V   </td><td class="markdownTableBodyNone">∫ V dt / T    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>accumulatedCharge</code>   </td><td class="markdownTableBodyNone">mAh   </td><td class="markdownTableBodyNone">∫ I dt / 3600    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>elapsedTime</code>   </td><td class="markdownTableBodyNone">s   </td><td class="markdownTableBodyNone">T   </td></tr>
+</table>
+<p>As médias são ponderadas pelo tempo: uma amostra que demorou mais pesa mais. Sem amostras na janela, as médias valem <code>NaN</code>.</p>
+<p>Os acumuladores ficam na memória RTC, então a janela sobrevive ao deep sleep (o tempo dormindo não entra na janela). Por isso só uma instância deve existir.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Uso</h1>
+<div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="energy__monitor_8h.html">energy_monitor.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">static</span> <a class="code hl_class" href="classEnergyMonitor.html">EnergyMonitor</a> Monitor(21, 22);   <span class="comment">// SDA, SCL, endereço 0x40 e Wire por padrão</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> setup() {</div>
+<div class="line">    Serial.begin(115200);</div>
+<div class="line">    <span class="keywordflow">if</span> (!Monitor.begin()) {</div>
+<div class="line">        ESP_LOGE(<span class="stringliteral">&quot;App&quot;</span>, <span class="stringliteral">&quot;Failed to start energy monitor&quot;</span>);</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> loop() {</div>
+<div class="line">    <a class="code hl_struct" href="structEnergyMonitor_1_1Measure.html">EnergyMonitor::Measure</a> measure;</div>
+<div class="line"> </div>
+<div class="line">    vTaskDelay(pdMS_TO_TICKS(10000));</div>
+<div class="line">    Monitor.getMeasure(measure);        <span class="comment">// lê a janela e inicia uma nova</span></div>
+<div class="line">}</div>
+<div class="ttc" id="aclassEnergyMonitor_html"><div class="ttname"><a href="classEnergyMonitor.html">EnergyMonitor</a></div><div class="ttdoc">Lê o INA226 periodicamente em uma task de prioridade 1 e acumula as medidas da janela atual,...</div><div class="ttdef"><b>Definição</b> energy_monitor.h:22</div></div>
+<div class="ttc" id="aenergy__monitor_8h_html"><div class="ttname"><a href="energy__monitor_8h.html">energy_monitor.h</a></div><div class="ttdoc">Monitor de energia com INA226: uma task interna amostra tensão e corrente e integra energia,...</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html">EnergyMonitor::Measure</a></div><div class="ttdoc">Medidas de uma janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:25</div></div>
+</div><!-- fragment --><ul>
+<li><code>getMeasure(measure, resetWindow = true)</code>: lê todas as medidas; com <code>resetWindow</code>, zera os acumuladores.</li>
+<li><code>getEnergy()</code>, <code>getAverageCurrent()</code>, <code>getAverageVoltage()</code>, <code>getAccumulatedCharge()</code>: leem uma medida sem iniciar nova janela. Retornam <code>NaN</code> antes de <code>begin()</code>.</li>
+<li><code>resetMeasure()</code>: inicia uma nova janela sem ler.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Configuração do INA226</h1>
+<p>Definida nas constantes privadas de <a href="include/energy_monitor.h">include/energy_monitor.h</a>, igual à do <code>EnergySensor</code> de <code>iot-firmware-sensors</code>:</p>
+<ul>
+<li>shunt de 0,1 Ω e LSB de corrente de 25 µA;</li>
+<li>conversão de 588 µs para tensão e corrente, com média de 4 amostras;</li>
+<li>I2C a 400 kHz.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md3"></a>
+Dependências</h1>
+<ul>
+<li><a href="https://github.com/RobTillaart/INA226">robtillaart/INA226</a> <code>^0.6.6</code></li>
+</ul>
+<p>Exemplo completo em <a href="examples/basic/basic.cpp">examples/basic</a>. A documentação Doxygen está em <a href="https://smart-lasdpc.github.io/iot-firmware-energy-monitor/">https://smart-lasdpc.github.io/iot-firmware-energy-monitor/</a>, publicada pelo workflow <code>Doxygen</code> a cada push na <code>main</code>. Para gerar localmente, rode <code>doxygen Doxyfile</code> na raiz da biblioteca; as páginas ficam em <code>doxygen/html</code>, que é versionada. </p>
+</div></div><!-- PageDoc -->
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>
