@@ -87,7 +87,7 @@ class EnergyMonitor {
     static void vTaskMeasureLoop(void* pvParameters);
 
   private:
-    static constexpr const char* LogTag = "EnergyMonitor";
+    static constexpr const char* LogTag = "Energy";
 
     static constexpr float ShuntResistanceOhm = 0.1f;
     static constexpr float CurrentLsbMa = 25e-3f;
