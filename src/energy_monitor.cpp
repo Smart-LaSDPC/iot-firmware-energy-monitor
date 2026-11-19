@@ -5,6 +5,7 @@
 #include <esp_log.h>
 
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_accumulators = {};
+RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_cycleAccumulators = {};
 
 EnergyMonitor::EnergyMonitor(int pinSda, int pinScl, uint8_t address, TwoWire& wire)
     : _sensor(address, &wire),
@@ -93,7 +94,7 @@ bool EnergyMonitor::begin() {
 }
 
 bool EnergyMonitor::getMeasure(Measure& measure, bool resetWindow) {
-    if (!this->readMeasure(measure, resetWindow)) {
+    if (!this->readMeasure(_accumulators, measure, resetWindow)) {
         return false;
     }
 
@@ -106,40 +107,54 @@ bool EnergyMonitor::getMeasure(Measure& measure, bool resetWindow) {
     return true;
 }
 
+bool EnergyMonitor::getCycleMeasure(Measure& measure, bool resetCycle) {
+    if (!this->readMeasure(_cycleAccumulators, measure, resetCycle)) {
+        return false;
+    }
+
+    ESP_LOGI(
+        LogTag,
+        "Cycle measure read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh cycle=%.2f s",
+        measure.energy, measure.averageCurrent, measure.averageVoltage,
+        measure.accumulatedCharge, measure.elapsedTime
+    );
+    return true;
+}
+
 float EnergyMonitor::getEnergy() {
     Measure measure;
-    return this->readMeasure(measure, false) ? measure.energy : NAN;
+    return this->readMeasure(_accumulators, measure, false) ? measure.energy : NAN;
 }
 
 float EnergyMonitor::getAverageCurrent() {
     Measure measure;
-    return this->readMeasure(measure, false) ? measure.averageCurrent : NAN;
+    return this->readMeasure(_accumulators, measure, false) ? measure.averageCurrent : NAN;
 }
 
 float EnergyMonitor::getAverageVoltage() {
     Measure measure;
-    return this->readMeasure(measure, false) ? measure.averageVoltage : NAN;
+    return this->readMeasure(_accumulators, measure, false) ? measure.averageVoltage : NAN;
 }
 
 float EnergyMonitor::getAccumulatedCharge() {
     Measure measure;
-    return this->readMeasure(measure, false) ? measure.accumulatedCharge : NAN;
+    return this->readMeasure(_accumulators, measure, false) ? measure.accumulatedCharge : NAN;
 }
 
 void EnergyMonitor::resetMeasure() {
     Measure measure;
-    this->readMeasure(measure, true);
+    this->readMeasure(_accumulators, measure, true);
 }
 
-bool EnergyMonitor::readMeasure(Measure& measure, bool resetWindow) {
+bool EnergyMonitor::readMeasure(MeasureAccumulators& accumulators, Measure& measure, bool resetWindow) {
     if (!_beginCalled) {
         return false;
     }
 
     xSemaphoreTake(_measureMutex, portMAX_DELAY);
-    const MeasureAccumulators window = _accumulators;
+    const MeasureAccumulators window = accumulators;
     if (resetWindow) {
-        _accumulators = {};
+        accumulators = {};
     }
     xSemaphoreGive(_measureMutex);
 
@@ -172,6 +187,11 @@ void EnergyMonitor::vTaskMeasureLoop(void* pvParameters) {
             _accumulators.charge += current * dt;
             _accumulators.voltageTime += voltage * dt;
             _accumulators.time += dt;
+
+            _cycleAccumulators.energy += voltage * current * dt;
+            _cycleAccumulators.charge += current * dt;
+            _cycleAccumulators.voltageTime += voltage * dt;
+            _cycleAccumulators.time += dt;
         }
         xSemaphoreGive(self->_measureMutex);
     }

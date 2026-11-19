@@ -18,6 +18,7 @@
  *
  * Os acumuladores ficam na memória RTC, então a janela sobrevive ao deep sleep. Por
  * isso só uma instância deve existir: todas compartilham os mesmos acumuladores.
+ * Uma segunda janela, a de ciclo, é integrada pela mesma task e lida por getCycleMeasure().
  */
 class EnergyMonitor {
   public:
@@ -63,6 +64,16 @@ class EnergyMonitor {
      */
     bool getMeasure(Measure& measure, bool resetWindow = true);
 
+    /**
+     * @brief Lê as medidas da janela de ciclo, independente da janela de getMeasure().
+     * O ciclo vai do último reset até a leitura, e normalmente é lido uma vez por boot.
+     *
+     * @param measure Recebe as medidas do ciclo.
+     * @param resetCycle Se true, zera os acumuladores do ciclo e inicia um novo.
+     * @return true se as medidas foram lidas; false se begin() não foi concluído.
+     */
+    bool getCycleMeasure(Measure& measure, bool resetCycle = true);
+
     /** @brief Energia consumida na janela atual, em J, sem iniciar uma nova janela. */
     float getEnergy();
 
@@ -106,8 +117,9 @@ class EnergyMonitor {
     };
 
     static MeasureAccumulators _accumulators; // Permanece na memória RTC para sobreviver ao deep sleep
+    static MeasureAccumulators _cycleAccumulators; // Janela do ciclo, também na memória RTC
 
-    bool readMeasure(Measure& measure, bool resetWindow);
+    bool readMeasure(MeasureAccumulators& accumulators, Measure& measure, bool resetWindow);
 
     INA226 _sensor;
     TwoWire& _wire;
