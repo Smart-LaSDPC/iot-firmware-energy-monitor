@@ -14,20 +14,21 @@ As médias são ponderadas pelo tempo: uma amostra que demorou mais pesa mais. S
 
 Os acumuladores ficam na memória RTC, então a janela sobrevive ao deep sleep (o tempo dormindo não entra na janela). Por isso só uma instância deve existir.
 
-## Hierarquia
+## Escolha do sensor
 
-- `BasicEnergyMonitor`: implementação do INA226, com a configuração anterior desta biblioteca.
-- `CompleteEnergyMonitor`: implementação do INA228, com acumuladores internos de energia e carga.
-- `EnergyMonitor`: classe abstrata que contém a task, o mutex e as janelas independentes do sensor.
+O firmware sempre instancia `EnergyMonitor`. O argumento `monitoringInSleep` do construtor escolhe o sensor:
 
-Use `BasicEnergyMonitor` para manter o comportamento existente.
+- `false` (padrão): INA226, pelo `BasicEnergyMonitor`, com a configuração anterior desta biblioteca. Não mede o deep sleep.
+- `true`: INA228, pelo `CompleteEnergyMonitor`, que também mede o último deep sleep pelos acumuladores do sensor.
+
+`EnergyMonitor` contém a task, o mutex e as janelas, e cria o sensor no construtor. `BasicEnergyMonitor` e `CompleteEnergyMonitor` implementam a interface interna `EnergyMonitorSensor` e não são usados diretamente.
 
 ## Uso básico
 
 ```cpp
-#include "basic_energy_monitor.h"
+#include "energy_monitor.h"
 
-static BasicEnergyMonitor Monitor(21, 22);   // SDA, SCL, endereço 0x40 e Wire por padrão
+static EnergyMonitor Monitor(21, 22);   // SDA, SCL, INA226, endereço 0x40 e Wire por padrão
 
 void setup() {
     Serial.begin(115200);
@@ -37,20 +38,21 @@ void setup() {
 }
 
 void loop() {
-    EnergyMonitor::Measure measure;
+    EnergyMonitorData consumption;
 
     vTaskDelay(pdMS_TO_TICKS(10000));
-    Monitor.getMeasure(measure);        // lê a janela e inicia uma nova
+    Monitor.getConsumption(consumption);        // lê a janela e inicia uma nova
 }
 ```
 
-- `getMeasure(measure, resetWindow = true)`: lê todas as medidas; com `resetWindow`, zera os acumuladores.
+- `getConsumption(consumption, resetWindow = true)`: lê todas as medidas; com `resetWindow`, zera os acumuladores.
 - `getEnergy()`, `getAverageCurrent()`, `getAverageVoltage()`, `getAccumulatedCharge()`: leem uma medida sem iniciar nova janela. Retornam `NaN` antes de `begin()`.
-- `resetMeasure()`: inicia uma nova janela sem ler.
-- `getCycleMeasure(measure, resetCycle = true)`: lê a janela de ciclo, independente da janela de `getMeasure()`.
-- `getSleepMeasure(measure)`: só em `CompleteEnergyMonitor`; lê o que o INA228 acumulou no último deep sleep (ver abaixo).
+- `resetConsumption()`: inicia uma nova janela sem ler.
+- `getCycleConsumption(consumption, resetCycle = true)`: lê a janela de ciclo, independente da janela de `getConsumption()`.
+- `getSleepConsumption(consumption)`: lê o que o INA228 acumulou no último deep sleep (ver abaixo). Com `monitoringInSleep` false, sempre retorna `false`.
+- `isMonitoringInSleep()`: `true` quando o monitor usa o INA228.
 
-Para o INA228, troque o include por `complete_energy_monitor.h` e a classe por `CompleteEnergyMonitor`; o resto da API é igual.
+Para o INA228, passe `true` em `monitoringInSleep`: `EnergyMonitor Monitor(21, 22, true);`. O resto da API é igual.
 
 ## Configuração do INA226
 
@@ -64,7 +66,7 @@ Para o INA228, troque o include por `complete_energy_monitor.h` e a classe por `
 
 `CompleteEnergyMonitor` usa shunt de 0,1 Ω, ADCRANGE 0 (±163,84 mV), corrente máxima de 1,6384 A, conversões de 540 µs para barramento e shunt, média de 4 amostras e modo contínuo de barramento + shunt.
 
-`getSleepMeasure(measure)` lê a energia e a carga acumuladas pelo hardware enquanto o ESP32 esteve em deep sleep. Ela só é válida após wake de deep sleep quando o INA228 permaneceu alimentado, os acumuladores não foram reiniciados e o snapshot anterior pode ser confirmado.
+Com `monitoringInSleep` true, `getSleepConsumption(consumption)` lê a energia e a carga acumuladas pelo hardware enquanto o ESP32 esteve em deep sleep. Ela só é válida após wake de deep sleep quando o INA228 permaneceu alimentado, os acumuladores não foram reiniciados e o snapshot anterior pode ser confirmado.
 
 A janela de sono vai da última amostra anterior ao sono até `begin()` após o wake. Pode incluir até um período de 10 ms antes do sono e o tempo de inicialização até `begin()`. O INA228 consome aproximadamente 0,64 mA em operação contínua durante o sono. O clock lento RTC pode afetar `elapsedTime` e a corrente média calculada. O primeiro boot após power-on não tem medida de sono.
 
@@ -72,21 +74,14 @@ A duração do sono vem do relógio RTC (`esp_rtc_get_time_us()`), que não é a
 
 ## Migração da versão 1.x
 
-`EnergyMonitor` agora é abstrata. Troque:
+O nome da classe não muda. O construtor ganhou `monitoringInSleep` antes do endereço:
 
 ```cpp
-EnergyMonitor Monitor(21, 22);
-extern EnergyMonitor Monitor;
+EnergyMonitor Monitor(21, 22);            // 1.x e 2.x: INA226
+EnergyMonitor Monitor(21, 22, true);      // 2.x: INA228, com medida de sono
 ```
 
-por:
-
-```cpp
-BasicEnergyMonitor Monitor(21, 22);
-extern BasicEnergyMonitor Monitor;
-```
-
-Quando uma referência abstrata for necessária, use `extern EnergyMonitor& Monitor;`.
+Quem passava endereço ou barramento deve incluir o novo argumento: `EnergyMonitor(21, 22, false, 0x41, Wire1)`.
 
 ## Dependências
 

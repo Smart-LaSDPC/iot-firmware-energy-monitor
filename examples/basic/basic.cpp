@@ -3,13 +3,12 @@
 */
 #include <Arduino.h>
 #include "energy_monitor.h"
-#include "basic_energy_monitor.h"
 
 static constexpr const char* LogTag = "Example";
 static constexpr int PinSda = 21;
 static constexpr int PinScl = 22;
 
-static BasicEnergyMonitor Monitor(PinSda, PinScl);
+static EnergyMonitor Monitor(PinSda, PinScl);
 
 void setup() {
     Serial.begin(115200);
@@ -20,7 +19,7 @@ void setup() {
 }
 
 void loop() {
-    EnergyMonitor::Measure measure;
+    EnergyMonitorData consumption;
 
     vTaskDelay(pdMS_TO_TICKS(10000));
 
@@ -28,7 +27,7 @@ void loop() {
     ESP_LOGI(LogTag, "Partial charge: %.6f mAh", Monitor.getAccumulatedCharge());
 
     // Com reset: lê a janela completa e começa outra
-    if (!Monitor.getMeasure(measure)) {
+    if (!Monitor.getConsumption(consumption)) {
         ESP_LOGW(LogTag, "Energy monitor not started");
     }
 }

@@ -2,14 +2,15 @@
     Uso com INA228: imprime as medidas do último sono e do ciclo, mede por 3 s e dorme por 10 s.
 */
 #include <Arduino.h>
-#include "complete_energy_monitor.h"
+#include "energy_monitor.h"
 #include <esp_sleep.h>
 
 static constexpr const char* LogTag = "Example";
 static constexpr int PinSda = 21;
 static constexpr int PinScl = 22;
+static constexpr bool MonitoringInSleep = true;
 
-static CompleteEnergyMonitor Monitor(PinSda, PinScl);
+static EnergyMonitor Monitor(PinSda, PinScl, MonitoringInSleep);
 
 void setup() {
     Serial.begin(115200);
@@ -19,24 +20,24 @@ void setup() {
         return;
     }
 
-    EnergyMonitor::Measure sleepMeasure;
-    if (Monitor.getSleepMeasure(sleepMeasure)) {
+    EnergyMonitorData sleepConsumption;
+    if (Monitor.getSleepConsumption(sleepConsumption)) {
         ESP_LOGI(
             LogTag,
             "Sleep: %.6f J %.3f mA %.3f V %.6f mAh %.2f s",
-            sleepMeasure.energy,
-            sleepMeasure.averageCurrent,
-            sleepMeasure.averageVoltage,
-            sleepMeasure.accumulatedCharge,
-            sleepMeasure.elapsedTime
+            sleepConsumption.energy,
+            sleepConsumption.averageCurrent,
+            sleepConsumption.averageVoltage,
+            sleepConsumption.accumulatedCharge,
+            sleepConsumption.elapsedTime
         );
     } else {
-        ESP_LOGI(LogTag, "No valid INA228 sleep measure");
+        ESP_LOGI(LogTag, "No valid INA228 sleep consumption");
     }
 
-    EnergyMonitor::Measure cycleMeasure;
-    if (Monitor.getCycleMeasure(cycleMeasure)) {
-        ESP_LOGI(LogTag, "Cycle: %.6f J %.6f mAh", cycleMeasure.energy, cycleMeasure.accumulatedCharge);
+    EnergyMonitorData cycleConsumption;
+    if (Monitor.getCycleConsumption(cycleConsumption)) {
+        ESP_LOGI(LogTag, "Cycle: %.6f J %.6f mAh", cycleConsumption.energy, cycleConsumption.accumulatedCharge);
     }
 
     vTaskDelay(pdMS_TO_TICKS(3000));

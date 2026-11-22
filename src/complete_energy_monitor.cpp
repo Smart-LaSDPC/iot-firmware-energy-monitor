@@ -13,15 +13,10 @@ static constexpr float MaxCurrentA = 1.6384f; // Fundo de escala com ADCRANGE 0:
 
 RTC_DATA_ATTR CompleteEnergyMonitor::SleepSnapshot CompleteEnergyMonitor::sleepSnapshot = {};
 
-CompleteEnergyMonitor::CompleteEnergyMonitor(int pinSda, int pinScl, uint8_t address, TwoWire& wire)
-    : EnergyMonitor(pinSda, pinScl, wire),
-      _sensor(address, &wire) {}
+CompleteEnergyMonitor::CompleteEnergyMonitor(uint8_t address, TwoWire& wire)
+    : _sensor(address, &wire) {}
 
-CompleteEnergyMonitor::~CompleteEnergyMonitor() {
-    this->stop();
-}
-
-bool CompleteEnergyMonitor::beginSensor() {
+bool CompleteEnergyMonitor::begin() {
     if (!this->_sensor.begin()) {
         ESP_LOGE(LogTag, "INA228 not found at address 0x%02X", this->_sensor.getAddress());
         return false;
@@ -39,36 +34,8 @@ bool CompleteEnergyMonitor::beginSensor() {
         }
     }
 
-    if (!this->_sleepMeasureComputed) {
-        this->_sleepMeasureComputed = true;
-        this->_sleepMeasureValid = false;
-        const esp_reset_reason_t resetReason = esp_reset_reason();
-        if (resetReason == ESP_RST_DEEPSLEEP && sleepSnapshot.magic == SleepSnapshotMagic) {
-            const double energyNowJ = this->_sensor.getEnergy();
-            const double chargeNowC = this->_sensor.getCharge();
-            const uint64_t rtcNowUs = esp_rtc_get_time_us();
-            const double dEnergyJ = energyNowJ - sleepSnapshot.energyJ;
-            const double dChargeC = chargeNowC - sleepSnapshot.chargeC;
-            const uint64_t dTimeUs = rtcNowUs > sleepSnapshot.rtcTimeUs
-                ? rtcNowUs - sleepSnapshot.rtcTimeUs
-                : 0;
-            if (dEnergyJ >= 0.0 && dChargeC >= 0.0 && dTimeUs > 0) {
-                const double elapsedS = dTimeUs * 1e-6;
-                this->_sleepMeasure.energy = dEnergyJ;
-                this->_sleepMeasure.accumulatedCharge = dChargeC * 1e3 / SecondsPerHour;
-                this->_sleepMeasure.elapsedTime = elapsedS;
-                this->_sleepMeasure.averageCurrent = dChargeC * 1e3 / elapsedS;
-                this->_sleepMeasure.averageVoltage =
-                    dChargeC > 0.0 ? dEnergyJ / dChargeC : NAN;
-                this->_sleepMeasureValid = true;
-            } else {
-                ESP_LOGW(LogTag, "INA228 sleep accumulators are invalid after deep sleep");
-            }
-        } else if (resetReason == ESP_RST_DEEPSLEEP) {
-            ESP_LOGW(LogTag, "INA228 sleep snapshot is not available");
-        } else {
-            ESP_LOGI(LogTag, "No INA228 sleep measure on reset reason %d", static_cast<int>(resetReason));
-        }
+    if (!this->_sleepConsumptionComputed) {
+        this->computeSleepConsumption();
     }
 
     // O datasheet não garante que RSTACC volte a 0 sozinho, então é limpo em seguida
@@ -92,6 +59,41 @@ bool CompleteEnergyMonitor::beginSensor() {
     return true;
 }
 
+void CompleteEnergyMonitor::computeSleepConsumption() {
+    this->_sleepConsumptionComputed = true;
+    this->_sleepConsumptionValid = false;
+
+    const esp_reset_reason_t resetReason = esp_reset_reason();
+
+    if (resetReason == ESP_RST_DEEPSLEEP) {
+        if (sleepSnapshot.magic != SleepSnapshotMagic) {
+            ESP_LOGW(LogTag, "INA228 sleep snapshot is not available");
+            return;
+        }
+        
+        const uint64_t rtcNowUs = esp_rtc_get_time_us();
+        const uint64_t dTimeUs = rtcNowUs > sleepSnapshot.rtcTimeUs ? rtcNowUs - sleepSnapshot.rtcTimeUs : 0;
+        
+        const double dEnergyJ = this->_sensor.getEnergy() - sleepSnapshot.energyJ;
+        const double dChargeC = this->_sensor.getCharge() - sleepSnapshot.chargeC;
+        
+        if (dEnergyJ >= 0.0 && dChargeC >= 0.0 && dTimeUs > 0) {
+            this->_sleepConsumption.elapsedTime = dTimeUs * 1e-6;
+            
+            this->_sleepConsumption.energy = dEnergyJ;
+            this->_sleepConsumption.accumulatedCharge = dChargeC * 1e3 / SecondsPerHour;
+            this->_sleepConsumption.averageCurrent = dChargeC * 1e3 / this->_sleepConsumption.elapsedTime;
+            this->_sleepConsumption.averageVoltage = dChargeC > 0.0 ? dEnergyJ / dChargeC : NAN;
+            
+            this->_sleepConsumptionValid = true;
+        } else {
+            ESP_LOGW(LogTag, "INA228 sleep accumulators are invalid after deep sleep");
+        }
+    } else {
+        ESP_LOGI(LogTag, "No INA228 sleep consumption on reset reason %d", static_cast<int>(resetReason));
+    }
+}
+
 bool CompleteEnergyMonitor::readSample(double& currentA, double& voltageV) {
     if (this->_sensor.getDiagnoseAlertBit(INA228_DIAG_CONVERT_COMPLETE) == 0) {
         return false;
@@ -109,21 +111,11 @@ void CompleteEnergyMonitor::onSample() {
     sleepSnapshot.magic = SleepSnapshotMagic;
 }
 
-bool CompleteEnergyMonitor::getSleepMeasure(Measure& measure) {
-    if (!this->_beginCalled) {
+bool CompleteEnergyMonitor::getSleepConsumption(EnergyMonitorData& consumption) {
+    if (!this->_sleepConsumptionValid) {
         return false;
     }
 
-    if (!this->_sleepMeasureValid) {
-        return false;
-    }
-
-    measure = this->_sleepMeasure;
-    ESP_LOGI(
-        LogTag,
-        "Sleep measure read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f s",
-        measure.energy, measure.averageCurrent, measure.averageVoltage,
-        measure.accumulatedCharge, measure.elapsedTime
-    );
+    consumption = this->_sleepConsumption;
     return true;
 }

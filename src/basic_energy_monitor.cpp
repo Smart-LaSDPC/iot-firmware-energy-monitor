@@ -4,15 +4,10 @@
 
 static constexpr float CurrentLsbMa = 25e-3f;
 
-BasicEnergyMonitor::BasicEnergyMonitor(int pinSda, int pinScl, uint8_t address, TwoWire& wire)
-    : EnergyMonitor(pinSda, pinScl, wire),
-      _sensor(address, &wire) {}
+BasicEnergyMonitor::BasicEnergyMonitor(uint8_t address, TwoWire& wire)
+    : _sensor(address, &wire) {}
 
-BasicEnergyMonitor::~BasicEnergyMonitor() {
-    this->stop();
-}
-
-bool BasicEnergyMonitor::beginSensor() {
+bool BasicEnergyMonitor::begin() {
     if (!this->_sensor.begin()) {
         ESP_LOGE(LogTag, "INA226 not found at address 0x%02X", this->_sensor.getAddress());
         return false;
