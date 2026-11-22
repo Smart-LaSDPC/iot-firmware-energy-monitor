@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vtaskmeasureloop_0',['vTaskMeasureLoop',['../classEnergyMonitor.html#a5e65c54fc2c387a9220273d521f14daf',1,'EnergyMonitor']]]
+  ['logtag_0',['LogTag',['../classEnergyMonitor.html#aa4767f39db844bd0fe94285e00763eae',1,'EnergyMonitor']]]
 ];

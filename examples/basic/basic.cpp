@@ -3,12 +3,13 @@
 */
 #include <Arduino.h>
 #include "energy_monitor.h"
+#include "basic_energy_monitor.h"
 
 static constexpr const char* LogTag = "Example";
 static constexpr int PinSda = 21;
 static constexpr int PinScl = 22;
 
-static EnergyMonitor Monitor(PinSda, PinScl);
+static BasicEnergyMonitor Monitor(PinSda, PinScl);
 
 void setup() {
     Serial.begin(115200);

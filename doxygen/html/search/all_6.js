@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['getaccumulatedcharge_0',['getAccumulatedCharge',['../classEnergyMonitor.html#abf280faf1d749923b7df110de2e12749',1,'EnergyMonitor']]],
-  ['getaveragecurrent_1',['getAverageCurrent',['../classEnergyMonitor.html#a82c15dc93174327f90c7bd580b74fca8',1,'EnergyMonitor']]],
-  ['getaveragevoltage_2',['getAverageVoltage',['../classEnergyMonitor.html#a7572ca37052677776e886d0b523c0708',1,'EnergyMonitor']]],
-  ['getenergy_3',['getEnergy',['../classEnergyMonitor.html#ad606f72119b8891e0ace1049a1b8ef1e',1,'EnergyMonitor']]],
-  ['getmeasure_4',['getMeasure',['../classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834',1,'EnergyMonitor']]]
+  ['elapsedtime_0',['elapsedTime',['../structEnergyMonitor_1_1Measure.html#a24618f0a09628fed02bbd4d09b29da4e',1,'EnergyMonitor::Measure']]],
+  ['energy_1',['energy',['../structEnergyMonitor_1_1Measure.html#a3d27bacb15999b809e29bb01fecd44ed',1,'EnergyMonitor::Measure']]],
+  ['energy_20monitor_2',['iot-firmware-energy-monitor',['../index.html',1,'']]],
+  ['energy_5fmonitor_2eh_3',['energy_monitor.h',['../energy__monitor_8h.html',1,'']]],
+  ['energymonitor_4',['energymonitor',['../classEnergyMonitor.html',1,'EnergyMonitor'],['../classEnergyMonitor.html#a2f5acb30d3565a57eabdc3f4824c4da2',1,'EnergyMonitor::EnergyMonitor()']]]
 ];

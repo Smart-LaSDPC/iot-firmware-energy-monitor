@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['begin_0',['begin',['../classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4',1,'EnergyMonitor']]]
+  ['_5fbegincalled_0',['_beginCalled',['../classEnergyMonitor.html#a8c119b5322b9016665c117b0ee1472d9',1,'EnergyMonitor']]]
 ];

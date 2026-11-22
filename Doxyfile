@@ -1,5 +1,5 @@
 PROJECT_NAME           = "iot-firmware-energy-monitor"
-PROJECT_BRIEF          = "Monitor de energia com INA226 para firmwares ESP32"
+PROJECT_BRIEF          = "Monitor de energia com INA226 e INA228 para firmwares ESP32"
 OUTPUT_LANGUAGE        = Brazilian
 OUTPUT_DIRECTORY       = doxygen
 

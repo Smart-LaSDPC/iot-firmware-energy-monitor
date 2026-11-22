@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['measure_0',['Measure',['../structEnergyMonitor_1_1Measure.html',1,'EnergyMonitor']]]
+  ['completeenergymonitor_0',['CompleteEnergyMonitor',['../classCompleteEnergyMonitor.html',1,'']]]
 ];

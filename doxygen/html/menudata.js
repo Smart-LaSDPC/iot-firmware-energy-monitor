@@ -27,8 +27,21 @@ var menudata={children:[
 {text:"Classes",url:"annotated.html",children:[
 {text:"Lista de Classes",url:"annotated.html"},
 {text:"Índice dos Componentes",url:"classes.html"},
+{text:"Hierarquia de Classes",url:"hierarchy.html"},
 {text:"Membros de classe",url:"functions.html",children:[
-{text:"Todos",url:"functions.html"},
+{text:"Todos",url:"functions.html",children:[
+{text:"_",url:"functions.html#index__5F"},
+{text:"a",url:"functions.html#index_a"},
+{text:"b",url:"functions.html#index_b"},
+{text:"c",url:"functions.html#index_c"},
+{text:"e",url:"functions.html#index_e"},
+{text:"g",url:"functions.html#index_g"},
+{text:"l",url:"functions.html#index_l"},
+{text:"o",url:"functions.html#index_o"},
+{text:"r",url:"functions.html#index_r"},
+{text:"s",url:"functions.html#index_s"},
+{text:"v",url:"functions.html#index_v"},
+{text:"~",url:"functions.html#index__7E"}]},
 {text:"Funções",url:"functions_func.html"},
 {text:"Variáveis",url:"functions_vars.html"}]}]},
 {text:"Arquivos",url:"files.html",children:[

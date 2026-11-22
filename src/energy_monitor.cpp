@@ -7,20 +7,29 @@
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_accumulators = {};
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_cycleAccumulators = {};
 
-EnergyMonitor::EnergyMonitor(int pinSda, int pinScl, uint8_t address, TwoWire& wire)
-    : _sensor(address, &wire),
-      _wire(wire),
+EnergyMonitor::EnergyMonitor(int pinSda, int pinScl, TwoWire& wire)
+    : _wire(wire),
       _pinSda(pinSda),
       _pinScl(pinScl) {}
 
 EnergyMonitor::~EnergyMonitor() {
+    this->stop();
+}
+
+void EnergyMonitor::stop() {
     if (_measureTaskHandle != nullptr) {
-        xSemaphoreTake(_measureMutex, portMAX_DELAY);
+        if (_measureMutex != nullptr) {
+            xSemaphoreTake(_measureMutex, portMAX_DELAY);
+        }
         vTaskDelete(_measureTaskHandle);
-        xSemaphoreGive(_measureMutex);
+        _measureTaskHandle = nullptr;
+        if (_measureMutex != nullptr) {
+            xSemaphoreGive(_measureMutex);
+        }
     }
     if (_measureMutex != nullptr) {
         vSemaphoreDelete(_measureMutex);
+        _measureMutex = nullptr;
     }
 }
 
@@ -34,34 +43,7 @@ bool EnergyMonitor::begin() {
         return false;
     }
 
-    if (!_sensor.begin()) {
-        ESP_LOGE(LogTag, "INA226 not found at address 0x%02X", _sensor.getAddress());
-        return false;
-    }
-
-    const int configureError = _sensor.configure(ShuntResistanceOhm, CurrentLsbMa);
-    if (configureError != INA226_ERR_NONE) {
-        ESP_LOGE(LogTag, "Failed to configure INA226: error=0x%04X", configureError);
-        return false;
-    }
-
-    if (!_sensor.setBusVoltageConversionTime(INA226_588_us)) {
-        ESP_LOGE(LogTag, "Failed to set INA226 bus voltage conversion time");
-        return false;
-    }
-
-    if (!_sensor.setShuntVoltageConversionTime(INA226_588_us)) {
-        ESP_LOGE(LogTag, "Failed to set INA226 shunt voltage conversion time");
-        return false;
-    }
-
-    if (!_sensor.setAverage(INA226_4_SAMPLES)) {
-        ESP_LOGE(LogTag, "Failed to set INA226 averaging");
-        return false;
-    }
-
-    if (!_sensor.setModeShuntBusContinuous()) {
-        ESP_LOGE(LogTag, "Failed to set INA226 continuous mode");
+    if (!this->beginSensor()) {
         return false;
     }
 
@@ -89,7 +71,7 @@ bool EnergyMonitor::begin() {
     }
 
     _beginCalled = true;
-    ESP_LOGI(LogTag, "Energy monitor started: SDA=%d SCL=%d period=%u ms", _pinSda, _pinScl, MeasurePeriodMs);
+    ESP_LOGI(LogTag, "Energy monitor started: SDA=%d SCL=%d period=%lu ms", _pinSda, _pinScl, static_cast<unsigned long>(MeasurePeriodMs));
     return true;
 }
 
@@ -175,10 +157,9 @@ void EnergyMonitor::vTaskMeasureLoop(void* pvParameters) {
         vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(MeasurePeriodMs));
 
         xSemaphoreTake(self->_measureMutex, portMAX_DELAY);
-        if (self->_sensor.isConversionReady()) {
-            const double current = self->_sensor.getCurrent();
-            const double voltage = self->_sensor.getBusVoltage();
-
+        double current = 0.0;
+        double voltage = 0.0;
+        if (self->readSample(current, voltage)) {
             const int64_t currentTimeUs = esp_timer_get_time();
             const double dt = (currentTimeUs - lastTimeUs) * 1e-6;
             lastTimeUs = currentTimeUs;
@@ -192,7 +173,10 @@ void EnergyMonitor::vTaskMeasureLoop(void* pvParameters) {
             _cycleAccumulators.charge += current * dt;
             _cycleAccumulators.voltageTime += voltage * dt;
             _cycleAccumulators.time += dt;
+            self->onSample();
         }
         xSemaphoreGive(self->_measureMutex);
     }
 }
+
+void EnergyMonitor::onSample() {}

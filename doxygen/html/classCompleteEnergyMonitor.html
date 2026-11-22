@@ -1,0 +1,383 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>iot-firmware-energy-monitor: Referência da Classe CompleteEnergyMonitor</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">iot-firmware-energy-monitor
+   </div>
+   <div id="projectbrief">Monitor de energia com INA226 e INA228 para firmwares ESP32</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Busca');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrado</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Componentes</a> &#124;
+<a href="#pub-methods">Membros Públicos</a> &#124;
+<a href="#pro-methods">Membros protegidos</a> &#124;
+<a href="classCompleteEnergyMonitor-members.html">Lista de todos os Membros</a>  </div>
+  <div class="headertitle"><div class="title">Referência da Classe CompleteEnergyMonitor</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Implementação INA228 do monitor de energia.  
+ <a href="classCompleteEnergyMonitor.html#details">Mais...</a></p>
+
+<p><code>#include &lt;<a class="el" href="complete__energy__monitor_8h_source.html">complete_energy_monitor.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagrama de hierarquia da classe CompleteEnergyMonitor:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classCompleteEnergyMonitor.png" usemap="#CompleteEnergyMonitor_map" alt=""/>
+  <map id="CompleteEnergyMonitor_map" name="CompleteEnergyMonitor_map">
+<area href="classEnergyMonitor.html" title="Classe abstrata que amostra periodicamente um sensor e acumula as medidas da janela atual,..." alt="EnergyMonitor" shape="rect" coords="0,0,148,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Membros Públicos</h2></td></tr>
+<tr class="memitem:a20625349275d00c539cb657be144b68d" id="r_a20625349275d00c539cb657be144b68d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCompleteEnergyMonitor.html#a20625349275d00c539cb657be144b68d">CompleteEnergyMonitor</a> (int pinSda, int pinScl, uint8_t address=0x40, TwoWire &amp;wire=Wire)</td></tr>
+<tr class="memdesc:a20625349275d00c539cb657be144b68d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constrói um monitor INA228.  <br /></td></tr>
+<tr class="separator:a20625349275d00c539cb657be144b68d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00288fdaa658cd3529432d4070d647d8" id="r_a00288fdaa658cd3529432d4070d647d8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCompleteEnergyMonitor.html#a00288fdaa658cd3529432d4070d647d8">getSleepMeasure</a> (<a class="el" href="structEnergyMonitor_1_1Measure.html">Measure</a> &amp;measure)</td></tr>
+<tr class="memdesc:a00288fdaa658cd3529432d4070d647d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retorna a medida acumulada pelo INA228 enquanto o ESP32 dormiu.  <br /></td></tr>
+<tr class="separator:a00288fdaa658cd3529432d4070d647d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classEnergyMonitor"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classEnergyMonitor')"><img src="closed.png" alt="-"/>&#160;Membros Públicos herdados de <a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td></tr>
+<tr class="memitem:a50d91a2b570fcf4b934e44cd4c647712 inherit pub_methods_classEnergyMonitor" id="r_a50d91a2b570fcf4b934e44cd4c647712"><td class="memItemLeft" align="right" valign="top">
+virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~EnergyMonitor</b> ()</td></tr>
+<tr class="memdesc:a50d91a2b570fcf4b934e44cd4c647712 inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encerra a task de medição e libera o mutex. <br /></td></tr>
+<tr class="separator:a50d91a2b570fcf4b934e44cd4c647712 inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39a856999495b1bb7399eb0bd51cdcd4 inherit pub_methods_classEnergyMonitor" id="r_a39a856999495b1bb7399eb0bd51cdcd4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4">begin</a> ()</td></tr>
+<tr class="memdesc:a39a856999495b1bb7399eb0bd51cdcd4 inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inicia o barramento I2C, configura o sensor e cria o mutex e a task de medição.  <br /></td></tr>
+<tr class="separator:a39a856999495b1bb7399eb0bd51cdcd4 inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec631a53d59ea015ec2f2ecdced23834 inherit pub_methods_classEnergyMonitor" id="r_aec631a53d59ea015ec2f2ecdced23834"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834">getMeasure</a> (<a class="el" href="structEnergyMonitor_1_1Measure.html">Measure</a> &amp;measure, bool resetWindow=true)</td></tr>
+<tr class="memdesc:aec631a53d59ea015ec2f2ecdced23834 inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê as medidas da janela atual.  <br /></td></tr>
+<tr class="separator:aec631a53d59ea015ec2f2ecdced23834 inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a645826d41f513641dc2d5cee0c041627 inherit pub_methods_classEnergyMonitor" id="r_a645826d41f513641dc2d5cee0c041627"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#a645826d41f513641dc2d5cee0c041627">getCycleMeasure</a> (<a class="el" href="structEnergyMonitor_1_1Measure.html">Measure</a> &amp;measure, bool resetCycle=true)</td></tr>
+<tr class="memdesc:a645826d41f513641dc2d5cee0c041627 inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê as medidas da janela de ciclo, independente da janela de <a class="el" href="classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834" title="Lê as medidas da janela atual.">getMeasure()</a>. O ciclo vai do último reset até a leitura, e normalmente é lido uma vez por boot.  <br /></td></tr>
+<tr class="separator:a645826d41f513641dc2d5cee0c041627 inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad606f72119b8891e0ace1049a1b8ef1e inherit pub_methods_classEnergyMonitor" id="r_ad606f72119b8891e0ace1049a1b8ef1e"><td class="memItemLeft" align="right" valign="top">
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getEnergy</b> ()</td></tr>
+<tr class="memdesc:ad606f72119b8891e0ace1049a1b8ef1e inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Energia consumida na janela atual, em J, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:ad606f72119b8891e0ace1049a1b8ef1e inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c15dc93174327f90c7bd580b74fca8 inherit pub_methods_classEnergyMonitor" id="r_a82c15dc93174327f90c7bd580b74fca8"><td class="memItemLeft" align="right" valign="top">
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getAverageCurrent</b> ()</td></tr>
+<tr class="memdesc:a82c15dc93174327f90c7bd580b74fca8 inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrente média da janela atual, em mA, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:a82c15dc93174327f90c7bd580b74fca8 inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7572ca37052677776e886d0b523c0708 inherit pub_methods_classEnergyMonitor" id="r_a7572ca37052677776e886d0b523c0708"><td class="memItemLeft" align="right" valign="top">
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getAverageVoltage</b> ()</td></tr>
+<tr class="memdesc:a7572ca37052677776e886d0b523c0708 inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tensão média da janela atual, em V, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:a7572ca37052677776e886d0b523c0708 inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf280faf1d749923b7df110de2e12749 inherit pub_methods_classEnergyMonitor" id="r_abf280faf1d749923b7df110de2e12749"><td class="memItemLeft" align="right" valign="top">
+float&#160;</td><td class="memItemRight" valign="bottom"><b>getAccumulatedCharge</b> ()</td></tr>
+<tr class="memdesc:abf280faf1d749923b7df110de2e12749 inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Corrente acumulada na janela atual, em mAh, sem iniciar uma nova janela. <br /></td></tr>
+<tr class="separator:abf280faf1d749923b7df110de2e12749 inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7099270005da09012253e640a173c29a inherit pub_methods_classEnergyMonitor" id="r_a7099270005da09012253e640a173c29a"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>resetMeasure</b> ()</td></tr>
+<tr class="memdesc:a7099270005da09012253e640a173c29a inherit pub_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Zera os acumuladores e inicia uma nova janela. <br /></td></tr>
+<tr class="separator:a7099270005da09012253e640a173c29a inherit pub_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Membros protegidos</h2></td></tr>
+<tr class="memitem:ac04aefb5687995268e4ec80ebe49798d" id="r_ac04aefb5687995268e4ec80ebe49798d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCompleteEnergyMonitor.html#ac04aefb5687995268e4ec80ebe49798d">beginSensor</a> () override</td></tr>
+<tr class="memdesc:ac04aefb5687995268e4ec80ebe49798d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configura o sensor após o barramento I2C já estar iniciado.  <br /></td></tr>
+<tr class="separator:ac04aefb5687995268e4ec80ebe49798d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a853d0fa0d8f07c19d3cbdd7be4837a7c" id="r_a853d0fa0d8f07c19d3cbdd7be4837a7c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCompleteEnergyMonitor.html#a853d0fa0d8f07c19d3cbdd7be4837a7c">readSample</a> (double &amp;currentA, double &amp;voltageV) override</td></tr>
+<tr class="memdesc:a853d0fa0d8f07c19d3cbdd7be4837a7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê uma amostra nova do sensor.  <br /></td></tr>
+<tr class="separator:a853d0fa0d8f07c19d3cbdd7be4837a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42611c136f82c3cb09324010d49f877" id="r_ae42611c136f82c3cb09324010d49f877"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classCompleteEnergyMonitor.html#ae42611c136f82c3cb09324010d49f877">onSample</a> () override</td></tr>
+<tr class="memdesc:ae42611c136f82c3cb09324010d49f877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Chamado após integrar uma amostra, sob o mutex da task.  <br /></td></tr>
+<tr class="separator:ae42611c136f82c3cb09324010d49f877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classEnergyMonitor"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_classEnergyMonitor')"><img src="closed.png" alt="-"/>&#160;Membros protegidos herdados de <a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td></tr>
+<tr class="memitem:a2f5acb30d3565a57eabdc3f4824c4da2 inherit pro_methods_classEnergyMonitor" id="r_a2f5acb30d3565a57eabdc3f4824c4da2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#a2f5acb30d3565a57eabdc3f4824c4da2">EnergyMonitor</a> (int pinSda, int pinScl, TwoWire &amp;wire)</td></tr>
+<tr class="memdesc:a2f5acb30d3565a57eabdc3f4824c4da2 inherit pro_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define os pinos e o barramento I2C usados pelo monitor.  <br /></td></tr>
+<tr class="separator:a2f5acb30d3565a57eabdc3f4824c4da2 inherit pro_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5e673a6cb9c8d9d61880e02de394b5 inherit pro_methods_classEnergyMonitor" id="r_a2c5e673a6cb9c8d9d61880e02de394b5"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>stop</b> ()</td></tr>
+<tr class="memdesc:a2c5e673a6cb9c8d9d61880e02de394b5 inherit pro_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Para a task e libera recursos. Seguro para chamadas repetidas. <br /></td></tr>
+<tr class="separator:a2c5e673a6cb9c8d9d61880e02de394b5 inherit pro_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Outros membros herdados</h2></td></tr>
+<tr class="inherit_header pub_static_methods_classEnergyMonitor"><td colspan="2" onclick="javascript:toggleInherit('pub_static_methods_classEnergyMonitor')"><img src="closed.png" alt="-"/>&#160;Membros públicos estáticos herdados de <a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td></tr>
+<tr class="memitem:a5e65c54fc2c387a9220273d521f14daf inherit pub_static_methods_classEnergyMonitor" id="r_a5e65c54fc2c387a9220273d521f14daf"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html#a5e65c54fc2c387a9220273d521f14daf">vTaskMeasureLoop</a> (void *pvParameters)</td></tr>
+<tr class="memdesc:a5e65c54fc2c387a9220273d521f14daf inherit pub_static_methods_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Task que, a cada período, lê corrente e tensão do sensor quando há uma conversão pronta e integra as amostras no tempo decorrido desde a anterior.  <br /></td></tr>
+<tr class="separator:a5e65c54fc2c387a9220273d521f14daf inherit pub_static_methods_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classEnergyMonitor"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classEnergyMonitor')"><img src="closed.png" alt="-"/>&#160;Atributos Protegidos herdados de <a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td></tr>
+<tr class="memitem:a8c119b5322b9016665c117b0ee1472d9 inherit pro_attribs_classEnergyMonitor" id="r_a8c119b5322b9016665c117b0ee1472d9"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_beginCalled</b> = false</td></tr>
+<tr class="memdesc:a8c119b5322b9016665c117b0ee1472d9 inherit pro_attribs_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">true após <a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4" title="Inicia o barramento I2C, configura o sensor e cria o mutex e a task de medição.">begin()</a> concluído. <br /></td></tr>
+<tr class="separator:a8c119b5322b9016665c117b0ee1472d9 inherit pro_attribs_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_static_attribs_classEnergyMonitor"><td colspan="2" onclick="javascript:toggleInherit('pro_static_attribs_classEnergyMonitor')"><img src="closed.png" alt="-"/>&#160;Atributos Protegidos Estáticos herdados de <a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td></tr>
+<tr class="memitem:aa4767f39db844bd0fe94285e00763eae inherit pro_static_attribs_classEnergyMonitor" id="r_aa4767f39db844bd0fe94285e00763eae"><td class="memItemLeft" align="right" valign="top">
+static constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><b>LogTag</b> = &quot;Energy&quot;</td></tr>
+<tr class="memdesc:aa4767f39db844bd0fe94285e00763eae inherit pro_static_attribs_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tag de log do monitor. <br /></td></tr>
+<tr class="separator:aa4767f39db844bd0fe94285e00763eae inherit pro_static_attribs_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af257243ae23dcc88e76b642183ea0dbb inherit pro_static_attribs_classEnergyMonitor" id="r_af257243ae23dcc88e76b642183ea0dbb"><td class="memItemLeft" align="right" valign="top">
+static constexpr float&#160;</td><td class="memItemRight" valign="bottom"><b>ShuntResistanceOhm</b> = 0.1f</td></tr>
+<tr class="memdesc:af257243ae23dcc88e76b642183ea0dbb inherit pro_static_attribs_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resistência do shunt, em Ω. <br /></td></tr>
+<tr class="separator:af257243ae23dcc88e76b642183ea0dbb inherit pro_static_attribs_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a12d8fba5008cd7d1bb52b850060a2e5a inherit pro_static_attribs_classEnergyMonitor" id="r_a12d8fba5008cd7d1bb52b850060a2e5a"><td class="memItemLeft" align="right" valign="top">
+static constexpr double&#160;</td><td class="memItemRight" valign="bottom"><b>SecondsPerHour</b> = 3600.0</td></tr>
+<tr class="memdesc:a12d8fba5008cd7d1bb52b850060a2e5a inherit pro_static_attribs_classEnergyMonitor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Conversão de A·s para A·h. <br /></td></tr>
+<tr class="separator:a12d8fba5008cd7d1bb52b850060a2e5a inherit pro_static_attribs_classEnergyMonitor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
+<div class="textblock"><p>Implementação INA228 do monitor de energia. </p>
+<p>A medida de sono usa os acumuladores de hardware do INA228 e um snapshot persistente na memória RTC. A janela inclui até um período de 10 ms antes do sono e o boot até <a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4" title="Inicia o barramento I2C, configura o sensor e cria o mutex e a task de medição.">begin()</a>. O INA228 deve permanecer ligado e em modo contínuo durante o sono. </p>
+</div><h2 class="groupheader">Construtores e Destrutores</h2>
+<a id="a20625349275d00c539cb657be144b68d" name="a20625349275d00c539cb657be144b68d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20625349275d00c539cb657be144b68d">&#9670;&#160;</a></span>CompleteEnergyMonitor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CompleteEnergyMonitor::CompleteEnergyMonitor </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pinSda</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pinScl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>address</em> = <code>0x40</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TwoWire &amp;&#160;</td>
+          <td class="paramname"><em>wire</em> = <code>Wire</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constrói um monitor INA228. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pinSda</td><td>Pino SDA. </td></tr>
+    <tr><td class="paramname">pinScl</td><td>Pino SCL. </td></tr>
+    <tr><td class="paramname">address</td><td>Endereço I2C. </td></tr>
+    <tr><td class="paramname">wire</td><td>Barramento I2C. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Documentação das funções</h2>
+<a id="ac04aefb5687995268e4ec80ebe49798d" name="ac04aefb5687995268e4ec80ebe49798d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac04aefb5687995268e4ec80ebe49798d">&#9670;&#160;</a></span>beginSensor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CompleteEnergyMonitor::beginSensor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configura o sensor após o barramento I2C já estar iniciado. </p>
+
+<p>Implementa <a class="el" href="classEnergyMonitor.html#a367d5e8f36e446268c3e5437be407b55">EnergyMonitor</a>.</p>
+
+</div>
+</div>
+<a id="a00288fdaa658cd3529432d4070d647d8" name="a00288fdaa658cd3529432d4070d647d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00288fdaa658cd3529432d4070d647d8">&#9670;&#160;</a></span>getSleepMeasure()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CompleteEnergyMonitor::getSleepMeasure </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structEnergyMonitor_1_1Measure.html">Measure</a> &amp;&#160;</td>
+          <td class="paramname"><em>measure</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retorna a medida acumulada pelo INA228 enquanto o ESP32 dormiu. </p>
+<p>Retorna false no primeiro boot sem snapshot válido ou após reinício dos acumuladores. </p><dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">measure</td><td>Recebe as medidas da janela de sono. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Retorna</dt><dd>true somente em um wake válido de deep sleep. </dd></dl>
+
+</div>
+</div>
+<a id="ae42611c136f82c3cb09324010d49f877" name="ae42611c136f82c3cb09324010d49f877"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae42611c136f82c3cb09324010d49f877">&#9670;&#160;</a></span>onSample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CompleteEnergyMonitor::onSample </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Chamado após integrar uma amostra, sob o mutex da task. </p>
+
+<p>Reimplementa <a class="el" href="classEnergyMonitor.html#ae9ab9cea42c10fec7ab8fc70ed87b28b">EnergyMonitor</a>.</p>
+
+</div>
+</div>
+<a id="a853d0fa0d8f07c19d3cbdd7be4837a7c" name="a853d0fa0d8f07c19d3cbdd7be4837a7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a853d0fa0d8f07c19d3cbdd7be4837a7c">&#9670;&#160;</a></span>readSample()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CompleteEnergyMonitor::readSample </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>currentA</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>voltageV</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Lê uma amostra nova do sensor. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">currentA</td><td>Corrente em A. </td></tr>
+    <tr><td class="paramname">voltageV</td><td>Tensão de barramento em V. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Retorna</dt><dd>true se havia conversão nova e a amostra foi lida; false para não integrar nada. </dd></dl>
+
+<p>Implementa <a class="el" href="classEnergyMonitor.html#aca990172d6244f24767967886fd748f7">EnergyMonitor</a>.</p>
+
+</div>
+</div>
+<hr/>A documentação para essa classe foi gerada a partir dos seguintes arquivos:<ul>
+<li>include/<a class="el" href="complete__energy__monitor_8h_source.html">complete_energy_monitor.h</a></li>
+<li>src/<b>complete_energy_monitor.cpp</b></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

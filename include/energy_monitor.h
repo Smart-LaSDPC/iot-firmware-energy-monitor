@@ -2,18 +2,16 @@
 
 /**
  * @file energy_monitor.h
- * @brief Monitor de energia com INA226: uma task interna amostra tensão e corrente
- * e integra energia, carga e as médias da janela de medição.
+ * @brief Infraestrutura independente do sensor para integração de energia.
  */
 #include <Arduino.h>
 #include <Wire.h>
-#include <INA226.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <freertos/semphr.h>
 
 /**
- * @brief Lê o INA226 periodicamente em uma task de prioridade 1 e acumula as medidas
+ * @brief Classe abstrata que amostra periodicamente um sensor e acumula as medidas
  * da janela atual, que vai do último reset até a leitura.
  *
  * Os acumuladores ficam na memória RTC, então a janela sobrevive ao deep sleep. Por
@@ -31,22 +29,11 @@ class EnergyMonitor {
         float elapsedTime;          ///< Duração da janela, em s.
     };
 
-    /**
-     * @brief Define os pinos e o endereço do INA226. O barramento, o sensor e a task
-     * só são iniciados em begin().
-     *
-     * @param pinSda Pino SDA do barramento I2C.
-     * @param pinScl Pino SCL do barramento I2C.
-     * @param address Endereço I2C do INA226.
-     * @param wire Barramento I2C usado pelo sensor.
-     */
-    EnergyMonitor(int pinSda, int pinScl, uint8_t address = 0x40, TwoWire& wire = Wire);
-
     /** @brief Encerra a task de medição e libera o mutex. */
-    ~EnergyMonitor();
+    virtual ~EnergyMonitor();
 
     /**
-     * @brief Inicia o barramento I2C, configura o INA226 e cria o mutex e a task de medição.
+     * @brief Inicia o barramento I2C, configura o sensor e cria o mutex e a task de medição.
      *
      * Pode ser chamado de novo após uma falha: o que já foi criado é reaproveitado.
      *
@@ -90,23 +77,52 @@ class EnergyMonitor {
     void resetMeasure();
 
     /**
-     * @brief Task que, a cada período, lê corrente e tensão do INA226 quando há
-     * conversão pronta e integra as amostras no tempo decorrido desde a anterior.
+     * @brief Task que, a cada período, lê corrente e tensão do sensor quando há
+     * uma conversão pronta e integra as amostras no tempo decorrido desde a anterior.
      *
      * @param pvParameters Instância de EnergyMonitor que criou a task.
      */
     static void vTaskMeasureLoop(void* pvParameters);
 
-  private:
-    static constexpr const char* LogTag = "Energy";
+  protected:
+    /**
+     * @brief Define os pinos e o barramento I2C usados pelo monitor.
+     * @param pinSda Pino SDA do barramento I2C.
+     * @param pinScl Pino SCL do barramento I2C.
+     * @param wire Barramento I2C usado pelo sensor.
+     */
+    EnergyMonitor(int pinSda, int pinScl, TwoWire& wire);
 
-    static constexpr float ShuntResistanceOhm = 0.1f;
-    static constexpr float CurrentLsbMa = 25e-3f;
+    /** @brief Configura o sensor após o barramento I2C já estar iniciado. */
+    virtual bool beginSensor() = 0;
+
+    /**
+     * @brief Lê uma amostra nova do sensor.
+     * @param currentA Corrente em A.
+     * @param voltageV Tensão de barramento em V.
+     * @return true se havia conversão nova e a amostra foi lida; false para não integrar nada.
+     */
+    virtual bool readSample(double& currentA, double& voltageV) = 0;
+
+    /** @brief Chamado após integrar uma amostra, sob o mutex da task. */
+    virtual void onSample();
+
+    /** @brief Para a task e libera recursos. Seguro para chamadas repetidas. */
+    void stop();
+
+    static constexpr const char* LogTag = "Energy";        ///< Tag de log do monitor.
+    static constexpr float ShuntResistanceOhm = 0.1f;      ///< Resistência do shunt, em Ω.
+    static constexpr double SecondsPerHour = 3600.0;       ///< Conversão de A·s para A·h.
+
+    bool _beginCalled = false;  ///< true após begin() concluído.
+
+  private:
     static constexpr uint32_t I2cFrequency = 400000;
     static constexpr uint32_t MeasurePeriodMs = 10;
     static constexpr uint32_t MeasureTaskStackSize = configMINIMAL_STACK_SIZE + 1024 * 2;
     static constexpr UBaseType_t MeasureTaskPriority = 1;
-    static constexpr double SecondsPerHour = 3600.0;
+
+    TwoWire& _wire;
 
     /** @brief Integrais da janela atual. */
     struct MeasureAccumulators {
@@ -116,17 +132,14 @@ class EnergyMonitor {
         double time;            ///< ∫ dt, em s.
     };
 
-    static MeasureAccumulators _accumulators; // Permanece na memória RTC para sobreviver ao deep sleep
-    static MeasureAccumulators _cycleAccumulators; // Janela do ciclo, também na memória RTC
+    static MeasureAccumulators _accumulators;          ///< Janela atual; fica na memória RTC para sobreviver ao deep sleep.
+    static MeasureAccumulators _cycleAccumulators;     ///< Janela do ciclo, também na memória RTC.
 
     bool readMeasure(MeasureAccumulators& accumulators, Measure& measure, bool resetWindow);
 
-    INA226 _sensor;
-    TwoWire& _wire;
     int _pinSda = 0;
     int _pinScl = 0;
 
-    bool _beginCalled = false;
     TaskHandle_t _measureTaskHandle = nullptr;
     SemaphoreHandle_t _measureMutex = nullptr;
 };
