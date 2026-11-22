@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['elapsedtime_0',['elapsedTime',['../structEnergyMonitor_1_1Measure.html#a24618f0a09628fed02bbd4d09b29da4e',1,'EnergyMonitor::Measure']]],
-  ['energy_1',['energy',['../structEnergyMonitor_1_1Measure.html#a3d27bacb15999b809e29bb01fecd44ed',1,'EnergyMonitor::Measure']]],
-  ['energy_20monitor_2',['iot-firmware-energy-monitor',['../index.html',1,'']]],
-  ['energy_5fmonitor_2eh_3',['energy_monitor.h',['../energy__monitor_8h.html',1,'']]],
-  ['energymonitor_4',['energymonitor',['../classEnergyMonitor.html',1,'EnergyMonitor'],['../classEnergyMonitor.html#a76834c90f2ab02e2c7b46749880c097f',1,'EnergyMonitor::EnergyMonitor()']]]
+  ['complete_5fenergy_5fmonitor_2eh_0',['complete_energy_monitor.h',['../complete__energy__monitor_8h.html',1,'']]],
+  ['completeenergymonitor_1',['completeenergymonitor',['../classCompleteEnergyMonitor.html',1,'CompleteEnergyMonitor'],['../classCompleteEnergyMonitor.html#a20625349275d00c539cb657be144b68d',1,'CompleteEnergyMonitor::CompleteEnergyMonitor()']]],
+  ['configuração_20do_20ina226_2',['Configuração do INA226',['../index.html#autotoc_md3',1,'']]],
+  ['configuração_20do_20ina228_3',['Configuração do INA228',['../index.html#autotoc_md4',1,'']]]
 ];

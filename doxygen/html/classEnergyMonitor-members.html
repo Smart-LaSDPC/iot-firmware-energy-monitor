@@ -23,7 +23,7 @@
   <td id="projectalign">
    <div id="projectname">iot-firmware-energy-monitor
    </div>
-   <div id="projectbrief">Monitor de energia com INA226 para firmwares ESP32</div>
+   <div id="projectbrief">Monitor de energia com INA226 e INA228 para firmwares ESP32</div>
   </td>
  </tr>
  </tbody>
@@ -76,16 +76,25 @@ $(function() {
 
 <p>Esta é a lista de todos os membros de <a class="el" href="classEnergyMonitor.html">EnergyMonitor</a>, incluindo os membros herdados.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4">begin</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a76834c90f2ab02e2c7b46749880c097f">EnergyMonitor</a>(int pinSda, int pinScl, uint8_t address=0x40, TwoWire &amp;wire=Wire)</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a8c119b5322b9016665c117b0ee1472d9">_beginCalled</a></td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a39a856999495b1bb7399eb0bd51cdcd4">begin</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a367d5e8f36e446268c3e5437be407b55">beginSensor</a>()=0</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a2f5acb30d3565a57eabdc3f4824c4da2">EnergyMonitor</a>(int pinSda, int pinScl, TwoWire &amp;wire)</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#abf280faf1d749923b7df110de2e12749">getAccumulatedCharge</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a82c15dc93174327f90c7bd580b74fca8">getAverageCurrent</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a7572ca37052677776e886d0b523c0708">getAverageVoltage</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#ad606f72119b8891e0ace1049a1b8ef1e">getEnergy</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834">getMeasure</a>(Measure &amp;measure, bool resetWindow=true)</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a645826d41f513641dc2d5cee0c041627">getCycleMeasure</a>(Measure &amp;measure, bool resetCycle=true)</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#ad606f72119b8891e0ace1049a1b8ef1e">getEnergy</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#aec631a53d59ea015ec2f2ecdced23834">getMeasure</a>(Measure &amp;measure, bool resetWindow=true)</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#aa4767f39db844bd0fe94285e00763eae">LogTag</a></td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#ae9ab9cea42c10fec7ab8fc70ed87b28b">onSample</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#aca990172d6244f24767967886fd748f7">readSample</a>(double &amp;currentA, double &amp;voltageV)=0</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">pure virtual</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a7099270005da09012253e640a173c29a">resetMeasure</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a5e65c54fc2c387a9220273d521f14daf">vTaskMeasureLoop</a>(void *pvParameters)</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a50d91a2b570fcf4b934e44cd4c647712">~EnergyMonitor</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a12d8fba5008cd7d1bb52b850060a2e5a">SecondsPerHour</a></td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">static</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#af257243ae23dcc88e76b642183ea0dbb">ShuntResistanceOhm</a></td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a2c5e673a6cb9c8d9d61880e02de394b5">stop</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">protected</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classEnergyMonitor.html#a5e65c54fc2c387a9220273d521f14daf">vTaskMeasureLoop</a>(void *pvParameters)</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classEnergyMonitor.html#a50d91a2b570fcf4b934e44cd4c647712">~EnergyMonitor</a>()</td><td class="entry"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

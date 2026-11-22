@@ -19,7 +19,7 @@ void setup() {
 }
 
 void loop() {
-    EnergyMonitor::Measure measure;
+    EnergyMonitorData consumption;
 
     vTaskDelay(pdMS_TO_TICKS(10000));
 
@@ -27,7 +27,7 @@ void loop() {
     ESP_LOGI(LogTag, "Partial charge: %.6f mAh", Monitor.getAccumulatedCharge());
 
     // Com reset: lê a janela completa e começa outra
-    if (!Monitor.getMeasure(measure)) {
+    if (!Monitor.getConsumption(consumption)) {
         ESP_LOGW(LogTag, "Energy monitor not started");
     }
 }

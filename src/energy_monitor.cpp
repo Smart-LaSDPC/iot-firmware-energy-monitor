@@ -1,26 +1,51 @@
 #include "energy_monitor.h"
+#include "basic_energy_monitor.h"
+#include "complete_energy_monitor.h"
 
 #include <cmath>
+#include <new>
 #include <esp_timer.h>
 #include <esp_log.h>
+
+static constexpr const char* LogTag = EnergyMonitorSensor::LogTag;
+static constexpr double SecondsPerHour = EnergyMonitorSensor::SecondsPerHour;
+
+static EnergyMonitorSensor* createSensor(bool monitoringInSleep, uint8_t address, TwoWire& wire) {
+    if (monitoringInSleep) {
+        return new (std::nothrow) CompleteEnergyMonitor(address, wire);
+    } else {
+        return new (std::nothrow) BasicEnergyMonitor(address, wire);
+    }
+}
 
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_accumulators = {};
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_cycleAccumulators = {};
 
-EnergyMonitor::EnergyMonitor(int pinSda, int pinScl, uint8_t address, TwoWire& wire)
-    : _sensor(address, &wire),
-      _wire(wire),
+EnergyMonitor::EnergyMonitor(int pinSda, int pinScl, bool monitoringInSleep, uint8_t address, TwoWire& wire)
+    : _wire(wire),
+      _monitoringInSleep(monitoringInSleep),
+      _sensor(createSensor(monitoringInSleep, address, wire)),
       _pinSda(pinSda),
       _pinScl(pinScl) {}
 
 EnergyMonitor::~EnergyMonitor() {
+    this->stop();
+}
+
+void EnergyMonitor::stop() {
     if (_measureTaskHandle != nullptr) {
-        xSemaphoreTake(_measureMutex, portMAX_DELAY);
+        if (_measureMutex != nullptr) {
+            xSemaphoreTake(_measureMutex, portMAX_DELAY);
+        }
         vTaskDelete(_measureTaskHandle);
-        xSemaphoreGive(_measureMutex);
+        _measureTaskHandle = nullptr;
+        if (_measureMutex != nullptr) {
+            xSemaphoreGive(_measureMutex);
+        }
     }
     if (_measureMutex != nullptr) {
         vSemaphoreDelete(_measureMutex);
+        _measureMutex = nullptr;
     }
 }
 
@@ -29,39 +54,17 @@ bool EnergyMonitor::begin() {
         return true;
     }
 
+    if (_sensor == nullptr) {
+        ESP_LOGE(LogTag, "Failed to allocate %s sensor", _monitoringInSleep ? "INA228" : "INA226");
+        return false;
+    }
+
     if (!_wire.begin(_pinSda, _pinScl, I2cFrequency)) {
         ESP_LOGE(LogTag, "Failed to start I2C bus: SDA=%d SCL=%d", _pinSda, _pinScl);
         return false;
     }
 
-    if (!_sensor.begin()) {
-        ESP_LOGE(LogTag, "INA226 not found at address 0x%02X", _sensor.getAddress());
-        return false;
-    }
-
-    const int configureError = _sensor.configure(ShuntResistanceOhm, CurrentLsbMa);
-    if (configureError != INA226_ERR_NONE) {
-        ESP_LOGE(LogTag, "Failed to configure INA226: error=0x%04X", configureError);
-        return false;
-    }
-
-    if (!_sensor.setBusVoltageConversionTime(INA226_588_us)) {
-        ESP_LOGE(LogTag, "Failed to set INA226 bus voltage conversion time");
-        return false;
-    }
-
-    if (!_sensor.setShuntVoltageConversionTime(INA226_588_us)) {
-        ESP_LOGE(LogTag, "Failed to set INA226 shunt voltage conversion time");
-        return false;
-    }
-
-    if (!_sensor.setAverage(INA226_4_SAMPLES)) {
-        ESP_LOGE(LogTag, "Failed to set INA226 averaging");
-        return false;
-    }
-
-    if (!_sensor.setModeShuntBusContinuous()) {
-        ESP_LOGE(LogTag, "Failed to set INA226 continuous mode");
+    if (!_sensor->begin()) {
         return false;
     }
 
@@ -89,64 +92,95 @@ bool EnergyMonitor::begin() {
     }
 
     _beginCalled = true;
-    ESP_LOGI(LogTag, "Energy monitor started: SDA=%d SCL=%d period=%u ms", _pinSda, _pinScl, MeasurePeriodMs);
+    ESP_LOGI(
+        LogTag,
+        "Energy monitor started: sensor=%s SDA=%d SCL=%d period=%lu ms",
+        _monitoringInSleep ? "INA228" : "INA226", _pinSda, _pinScl, static_cast<unsigned long>(MeasurePeriodMs)
+    );
     return true;
 }
 
-bool EnergyMonitor::getMeasure(Measure& measure, bool resetWindow) {
-    if (!this->readMeasure(_accumulators, measure, resetWindow)) {
+bool EnergyMonitor::getConsumption(EnergyMonitorData& consumption, bool resetWindow) {
+    if (!this->readConsumption(_accumulators, consumption, resetWindow)) {
         return false;
     }
 
     ESP_LOGI(
         LogTag,
-        "Measure read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f s",
-        measure.energy, measure.averageCurrent, measure.averageVoltage,
-        measure.accumulatedCharge, measure.elapsedTime
+        "Consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f s",
+        consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
+        consumption.accumulatedCharge, consumption.elapsedTime
     );
     return true;
 }
 
-bool EnergyMonitor::getCycleMeasure(Measure& measure, bool resetCycle) {
-    if (!this->readMeasure(_cycleAccumulators, measure, resetCycle)) {
+bool EnergyMonitor::getCycleConsumption(EnergyMonitorData& consumption, bool resetCycle) {
+    if (!this->readConsumption(_cycleAccumulators, consumption, resetCycle)) {
         return false;
     }
 
     ESP_LOGI(
         LogTag,
-        "Cycle measure read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh cycle=%.2f s",
-        measure.energy, measure.averageCurrent, measure.averageVoltage,
-        measure.accumulatedCharge, measure.elapsedTime
+        "Cycle consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh cycle=%.2f s",
+        consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
+        consumption.accumulatedCharge, consumption.elapsedTime
     );
     return true;
+}
+
+bool EnergyMonitor::getSleepConsumption(EnergyMonitorData& consumption) {
+    if (!_monitoringInSleep) {
+        ESP_LOGD(LogTag, "Sleep consumption unavailable: monitoring in sleep disabled (INA226)");
+        return false;
+    }
+
+    if (!_beginCalled) {
+        return false;
+    }
+
+    if (!_sensor->getSleepConsumption(consumption)) {
+        return false;
+    }
+
+    ESP_LOGI(
+        LogTag,
+        "Sleep consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f s",
+        consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
+        consumption.accumulatedCharge, consumption.elapsedTime
+    );
+    return true;
+}
+
+bool EnergyMonitor::isMonitoringInSleep() const {
+    return _monitoringInSleep;
 }
 
 float EnergyMonitor::getEnergy() {
-    Measure measure;
-    return this->readMeasure(_accumulators, measure, false) ? measure.energy : NAN;
+    EnergyMonitorData consumption;
+    return this->readConsumption(_accumulators, consumption, false) ? consumption.energy : NAN;
 }
 
 float EnergyMonitor::getAverageCurrent() {
-    Measure measure;
-    return this->readMeasure(_accumulators, measure, false) ? measure.averageCurrent : NAN;
+    EnergyMonitorData consumption;
+    return this->readConsumption(_accumulators, consumption, false) ? consumption.averageCurrent : NAN;
 }
 
 float EnergyMonitor::getAverageVoltage() {
-    Measure measure;
-    return this->readMeasure(_accumulators, measure, false) ? measure.averageVoltage : NAN;
+    EnergyMonitorData consumption;
+    return this->readConsumption(_accumulators, consumption, false) ? consumption.averageVoltage : NAN;
 }
 
 float EnergyMonitor::getAccumulatedCharge() {
-    Measure measure;
-    return this->readMeasure(_accumulators, measure, false) ? measure.accumulatedCharge : NAN;
+    EnergyMonitorData consumption;
+    return this->readConsumption(_accumulators, consumption, false) ? consumption.accumulatedCharge : NAN;
 }
 
-void EnergyMonitor::resetMeasure() {
-    Measure measure;
-    this->readMeasure(_accumulators, measure, true);
+void EnergyMonitor::resetConsumption() {
+    EnergyMonitorData consumption;
+    this->readConsumption(_accumulators, consumption, true);
 }
 
-bool EnergyMonitor::readMeasure(MeasureAccumulators& accumulators, Measure& measure, bool resetWindow) {
+bool EnergyMonitor::readConsumption(MeasureAccumulators& accumulators, EnergyMonitorData& consumption, bool resetWindow) {
     if (!_beginCalled) {
         return false;
     }
@@ -158,11 +192,11 @@ bool EnergyMonitor::readMeasure(MeasureAccumulators& accumulators, Measure& meas
     }
     xSemaphoreGive(_measureMutex);
 
-    measure.energy = window.energy;
-    measure.accumulatedCharge = window.charge * 1e3 / SecondsPerHour;
-    measure.elapsedTime = window.time;
-    measure.averageCurrent = window.time > 0.0 ? window.charge * 1e3 / window.time : NAN;
-    measure.averageVoltage = window.time > 0.0 ? window.voltageTime / window.time : NAN;
+    consumption.energy = window.energy;
+    consumption.accumulatedCharge = window.charge * 1e3 / SecondsPerHour;
+    consumption.elapsedTime = window.time;
+    consumption.averageCurrent = window.time > 0.0 ? window.charge * 1e3 / window.time : NAN;
+    consumption.averageVoltage = window.time > 0.0 ? window.voltageTime / window.time : NAN;
     return true;
 }
 
@@ -175,10 +209,9 @@ void EnergyMonitor::vTaskMeasureLoop(void* pvParameters) {
         vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(MeasurePeriodMs));
 
         xSemaphoreTake(self->_measureMutex, portMAX_DELAY);
-        if (self->_sensor.isConversionReady()) {
-            const double current = self->_sensor.getCurrent();
-            const double voltage = self->_sensor.getBusVoltage();
-
+        double current = 0.0;
+        double voltage = 0.0;
+        if (self->_sensor->readSample(current, voltage)) {
             const int64_t currentTimeUs = esp_timer_get_time();
             const double dt = (currentTimeUs - lastTimeUs) * 1e-6;
             lastTimeUs = currentTimeUs;
@@ -192,6 +225,7 @@ void EnergyMonitor::vTaskMeasureLoop(void* pvParameters) {
             _cycleAccumulators.charge += current * dt;
             _cycleAccumulators.voltageTime += voltage * dt;
             _cycleAccumulators.time += dt;
+            self->_sensor->onSample();
         }
         xSemaphoreGive(self->_measureMutex);
     }

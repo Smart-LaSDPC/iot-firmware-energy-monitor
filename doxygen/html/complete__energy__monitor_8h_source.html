@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>iot-firmware-energy-monitor: Código-Fonte de include/complete_energy_monitor.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">iot-firmware-energy-monitor
+   </div>
+   <div id="projectbrief">Monitor de energia com INA226 e INA228 para firmwares ESP32</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Busca');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Carregando...</div>
+<div class="SRStatus" id="Searching">Procurando...</div>
+<div class="SRStatus" id="NoMatches">Nenhuma entrada encontrado</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div class="header">
+  <div class="headertitle"><div class="title">complete_energy_monitor.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="complete__energy__monitor_8h.html">Ir para a documentação desse arquivo.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;<a class="code" href="energy__monitor_8h.html">energy_monitor.h</a>&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;INA228.h&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classCompleteEnergyMonitor.html">   17</a></span><span class="keyword">class </span><a class="code hl_class" href="classCompleteEnergyMonitor.html">CompleteEnergyMonitor</a> : <span class="keyword">public</span> <a class="code hl_class" href="classEnergyMonitor.html">EnergyMonitor</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_class" href="classCompleteEnergyMonitor.html">CompleteEnergyMonitor</a>(<span class="keywordtype">int</span> pinSda, <span class="keywordtype">int</span> pinScl, uint8_t address = 0x40, TwoWire&amp; wire = Wire);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_class" href="classCompleteEnergyMonitor.html">~CompleteEnergyMonitor</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classCompleteEnergyMonitor.html#a00288fdaa658cd3529432d4070d647d8">getSleepMeasure</a>(<a class="code hl_struct" href="structEnergyMonitor_1_1Measure.html">Measure</a>&amp; measure);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classCompleteEnergyMonitor.html#ac04aefb5687995268e4ec80ebe49798d">beginSensor</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="classCompleteEnergyMonitor.html#a853d0fa0d8f07c19d3cbdd7be4837a7c">readSample</a>(<span class="keywordtype">double</span>&amp; currentA, <span class="keywordtype">double</span>&amp; voltageV) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classCompleteEnergyMonitor.html#ae42611c136f82c3cb09324010d49f877">onSample</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">struct </span>SleepSnapshot {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordtype">double</span> energyJ;         </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordtype">double</span> chargeC;         </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        uint64_t rtcTimeUs;     </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        uint32_t magic;         </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    };</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> uint32_t SleepSnapshotMagic = 0x494E4132;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">static</span> SleepSnapshot sleepSnapshot;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    INA228 _sensor;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordtype">bool</span> _sleepMeasureComputed = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordtype">bool</span> _sleepMeasureValid = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <a class="code hl_struct" href="structEnergyMonitor_1_1Measure.html">Measure</a> _sleepMeasure = {};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>};</div>
+</div>
+<div class="ttc" id="aclassCompleteEnergyMonitor_html"><div class="ttname"><a href="classCompleteEnergyMonitor.html">CompleteEnergyMonitor</a></div><div class="ttdoc">Implementação INA228 do monitor de energia.</div><div class="ttdef"><b>Definição</b> complete_energy_monitor.h:17</div></div>
+<div class="ttc" id="aclassCompleteEnergyMonitor_html_a00288fdaa658cd3529432d4070d647d8"><div class="ttname"><a href="classCompleteEnergyMonitor.html#a00288fdaa658cd3529432d4070d647d8">CompleteEnergyMonitor::getSleepMeasure</a></div><div class="ttdeci">bool getSleepMeasure(Measure &amp;measure)</div><div class="ttdoc">Retorna a medida acumulada pelo INA228 enquanto o ESP32 dormiu.</div><div class="ttdef"><b>Definição</b> complete_energy_monitor.cpp:112</div></div>
+<div class="ttc" id="aclassCompleteEnergyMonitor_html_a853d0fa0d8f07c19d3cbdd7be4837a7c"><div class="ttname"><a href="classCompleteEnergyMonitor.html#a853d0fa0d8f07c19d3cbdd7be4837a7c">CompleteEnergyMonitor::readSample</a></div><div class="ttdeci">bool readSample(double &amp;currentA, double &amp;voltageV) override</div><div class="ttdoc">Lê uma amostra nova do sensor.</div><div class="ttdef"><b>Definição</b> complete_energy_monitor.cpp:95</div></div>
+<div class="ttc" id="aclassCompleteEnergyMonitor_html_ac04aefb5687995268e4ec80ebe49798d"><div class="ttname"><a href="classCompleteEnergyMonitor.html#ac04aefb5687995268e4ec80ebe49798d">CompleteEnergyMonitor::beginSensor</a></div><div class="ttdeci">bool beginSensor() override</div><div class="ttdoc">Configura o sensor após o barramento I2C já estar iniciado.</div><div class="ttdef"><b>Definição</b> complete_energy_monitor.cpp:24</div></div>
+<div class="ttc" id="aclassCompleteEnergyMonitor_html_ae42611c136f82c3cb09324010d49f877"><div class="ttname"><a href="classCompleteEnergyMonitor.html#ae42611c136f82c3cb09324010d49f877">CompleteEnergyMonitor::onSample</a></div><div class="ttdeci">void onSample() override</div><div class="ttdoc">Chamado após integrar uma amostra, sob o mutex da task.</div><div class="ttdef"><b>Definição</b> complete_energy_monitor.cpp:105</div></div>
+<div class="ttc" id="aclassEnergyMonitor_html"><div class="ttname"><a href="classEnergyMonitor.html">EnergyMonitor</a></div><div class="ttdoc">Classe abstrata que amostra periodicamente um sensor e acumula as medidas da janela atual,...</div><div class="ttdef"><b>Definição</b> energy_monitor.h:21</div></div>
+<div class="ttc" id="aenergy__monitor_8h_html"><div class="ttname"><a href="energy__monitor_8h.html">energy_monitor.h</a></div><div class="ttdoc">Infraestrutura independente do sensor para integração de energia.</div></div>
+<div class="ttc" id="astructEnergyMonitor_1_1Measure_html"><div class="ttname"><a href="structEnergyMonitor_1_1Measure.html">EnergyMonitor::Measure</a></div><div class="ttdoc">Medidas de uma janela.</div><div class="ttdef"><b>Definição</b> energy_monitor.h:24</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8
+</small></address>
+</body>
+</html>

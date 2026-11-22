@@ -23,7 +23,7 @@
   <td id="projectalign">
    <div id="projectname">iot-firmware-energy-monitor
    </div>
-   <div id="projectbrief">Monitor de energia com INA226 para firmwares ESP32</div>
+   <div id="projectbrief">Monitor de energia com INA226 e INA228 para firmwares ESP32</div>
   </td>
  </tr>
  </tbody>
@@ -80,11 +80,10 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Monitor de energia com INA226: uma task interna amostra tensão e corrente e integra energia, carga e as médias da janela de medição.  
+<p>Infraestrutura independente do sensor para integração de energia.  
 <a href="#details">Mais...</a></p>
 <div class="textblock"><code>#include &lt;Arduino.h&gt;</code><br />
 <code>#include &lt;Wire.h&gt;</code><br />
-<code>#include &lt;INA226.h&gt;</code><br />
 <code>#include &lt;freertos/FreeRTOS.h&gt;</code><br />
 <code>#include &lt;freertos/task.h&gt;</code><br />
 <code>#include &lt;freertos/semphr.h&gt;</code><br />
@@ -94,14 +93,14 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Componentes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classEnergyMonitor.html">EnergyMonitor</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lê o INA226 periodicamente em uma task de prioridade 1 e acumula as medidas da janela atual, que vai do último reset até a leitura.  <a href="classEnergyMonitor.html#details">Mais...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Classe abstrata que amostra periodicamente um sensor e acumula as medidas da janela atual, que vai do último reset até a leitura.  <a href="classEnergyMonitor.html#details">Mais...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEnergyMonitor_1_1Measure.html">EnergyMonitor::Measure</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Medidas de uma janela.  <a href="structEnergyMonitor_1_1Measure.html#details">Mais...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
-<div class="textblock"><p>Monitor de energia com INA226: uma task interna amostra tensão e corrente e integra energia, carga e as médias da janela de medição. </p>
+<div class="textblock"><p>Infraestrutura independente do sensor para integração de energia. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
