@@ -72,17 +72,6 @@ A janela de sono vai da última amostra anterior ao sono até `begin()` após o 
 
 A duração do sono vem do relógio RTC (`esp_rtc_get_time_us()`), que não é alterado por sincronização de hora. Nenhuma chamada é necessária antes de dormir: a task atualiza o snapshot dos acumuladores a cada amostra.
 
-## Migração da versão 1.x
-
-O nome da classe não muda. O construtor ganhou `monitoringInSleep` antes do endereço:
-
-```cpp
-EnergyMonitor Monitor(21, 22);            // 1.x e 2.x: INA226
-EnergyMonitor Monitor(21, 22, true);      // 2.x: INA228, com medida de sono
-```
-
-Quem passava endereço ou barramento deve incluir o novo argumento: `EnergyMonitor(21, 22, false, 0x41, Wire1)`.
-
 ## Dependências
 
 - [robtillaart/INA226](https://github.com/RobTillaart/INA226) `^0.6.6`
