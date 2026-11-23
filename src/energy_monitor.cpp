@@ -102,6 +102,7 @@ bool EnergyMonitor::begin() {
 
 bool EnergyMonitor::getConsumption(EnergyMonitorData& consumption, bool resetWindow) {
     if (!this->readConsumption(_accumulators, consumption, resetWindow)) {
+        ESP_LOGE(LogTag, "Consumption read failed: monitor not started");
         return false;
     }
 
@@ -116,6 +117,7 @@ bool EnergyMonitor::getConsumption(EnergyMonitorData& consumption, bool resetWin
 
 bool EnergyMonitor::getCycleConsumption(EnergyMonitorData& consumption, bool resetCycle) {
     if (!this->readConsumption(_cycleAccumulators, consumption, resetCycle)) {
+        ESP_LOGE(LogTag, "Cycle consumption read failed: monitor not started");
         return false;
     }
 
@@ -135,10 +137,12 @@ bool EnergyMonitor::getSleepConsumption(EnergyMonitorData& consumption) {
     }
 
     if (!_beginCalled) {
+        ESP_LOGE(LogTag, "Sleep consumption unavailable: monitor not started");
         return false;
     }
 
     if (!_sensor->getSleepConsumption(consumption)) {
+        ESP_LOGD(LogTag, "Sleep consumption unavailable: no valid sleep window");
         return false;
     }
 

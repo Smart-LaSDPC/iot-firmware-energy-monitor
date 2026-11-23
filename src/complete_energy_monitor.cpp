@@ -44,11 +44,23 @@ bool CompleteEnergyMonitor::begin() {
         return false;
     }
 
-    if (!this->_sensor.setBusVoltageConversionTime(INA228_540_us) ||
-        !this->_sensor.setShuntVoltageConversionTime(INA228_540_us) ||
-        !this->_sensor.setAverage(INA228_4_SAMPLES) ||
-        !this->_sensor.setMode(INA228_MODE_CONT_BUS_SHUNT)) {
-        ESP_LOGE(LogTag, "Failed to configure INA228 ADC");
+    if (!this->_sensor.setBusVoltageConversionTime(INA228_540_us)) {
+        ESP_LOGE(LogTag, "Failed to set INA228 bus voltage conversion time");
+        return false;
+    }
+
+    if (!this->_sensor.setShuntVoltageConversionTime(INA228_540_us)) {
+        ESP_LOGE(LogTag, "Failed to set INA228 shunt voltage conversion time");
+        return false;
+    }
+
+    if (!this->_sensor.setAverage(INA228_4_SAMPLES)) {
+        ESP_LOGE(LogTag, "Failed to set INA228 averaging");
+        return false;
+    }
+
+    if (!this->_sensor.setMode(INA228_MODE_CONT_BUS_SHUNT)) {
+        ESP_LOGE(LogTag, "Failed to set INA228 continuous mode");
         return false;
     }
 
@@ -77,18 +89,29 @@ void CompleteEnergyMonitor::computeSleepConsumption() {
         const double dEnergyJ = this->_sensor.getEnergy() - sleepSnapshot.energyJ;
         const double dChargeC = this->_sensor.getCharge() - sleepSnapshot.chargeC;
         
-        if (dEnergyJ >= 0.0 && dChargeC >= 0.0 && dTimeUs > 0) {
-            this->_sleepConsumption.elapsedTime = dTimeUs * 1e-6;
-            
-            this->_sleepConsumption.energy = dEnergyJ;
-            this->_sleepConsumption.accumulatedCharge = dChargeC * 1e3 / SecondsPerHour;
-            this->_sleepConsumption.averageCurrent = dChargeC * 1e3 / this->_sleepConsumption.elapsedTime;
-            this->_sleepConsumption.averageVoltage = dChargeC > 0.0 ? dEnergyJ / dChargeC : NAN;
-            
-            this->_sleepConsumptionValid = true;
-        } else {
-            ESP_LOGW(LogTag, "INA228 sleep accumulators are invalid after deep sleep");
+        if (dEnergyJ < 0.0) {
+            ESP_LOGW(LogTag, "INA228 sleep energy is negative: energy=%.6f J", dEnergyJ);
+            return;
         }
+
+        if (dChargeC < 0.0) {
+            ESP_LOGW(LogTag, "INA228 sleep charge is negative: charge=%.6f C", dChargeC);
+            return;
+        }
+
+        if (dTimeUs == 0) {
+            ESP_LOGW(LogTag, "INA228 sleep elapsed time is zero");
+            return;
+        }
+
+        this->_sleepConsumption.elapsedTime = dTimeUs * 1e-6;
+
+        this->_sleepConsumption.energy = dEnergyJ;
+        this->_sleepConsumption.accumulatedCharge = dChargeC * 1e3 / SecondsPerHour;
+        this->_sleepConsumption.averageCurrent = dChargeC * 1e3 / this->_sleepConsumption.elapsedTime;
+        this->_sleepConsumption.averageVoltage = dChargeC > 0.0 ? dEnergyJ / dChargeC : NAN;
+
+        this->_sleepConsumptionValid = true;
     } else {
         ESP_LOGI(LogTag, "No INA228 sleep consumption on reset reason %d", static_cast<int>(resetReason));
     }
