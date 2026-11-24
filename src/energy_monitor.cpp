@@ -21,9 +21,17 @@ static EnergyMonitorSensor* createSensor(bool monitoringInSleep, uint8_t address
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_accumulators = {};
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_cycleAccumulators = {};
 
-EnergyMonitor::EnergyMonitor(int pinSda, int pinScl, bool monitoringInSleep, uint8_t address, TwoWire& wire)
+EnergyMonitor::EnergyMonitor(
+    int pinSda,
+    int pinScl,
+    bool monitoringInSleep,
+    uint8_t address,
+    TwoWire& wire,
+    unsigned long monitorResolutionMs
+)
     : _wire(wire),
       _monitoringInSleep(monitoringInSleep),
+      _monitorResolutionMs(monitorResolutionMs),
       _sensor(createSensor(monitoringInSleep, address, wire)),
       _pinSda(pinSda),
       _pinScl(pinScl) {}
@@ -99,7 +107,7 @@ bool EnergyMonitor::begin() {
     ESP_LOGI(
         LogTag,
         "Energy monitor started: sensor=%s SDA=%d SCL=%d period=%lu ms",
-        _monitoringInSleep ? "INA228" : "INA226", _pinSda, _pinScl, static_cast<unsigned long>(MeasurePeriodMs)
+        _monitoringInSleep ? "INA228" : "INA226", _pinSda, _pinScl, _monitorResolutionMs)
     );
     return true;
 }
@@ -245,7 +253,7 @@ void EnergyMonitor::vTaskMeasureLoop(void* pvParameters) {
     int64_t lastTimeUs = esp_timer_get_time();
 
     while (true) {
-        vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(MeasurePeriodMs));
+        vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(self->_monitorResolutionMs));
 
         xSemaphoreTake(self->_measureMutex, portMAX_DELAY);
         double current = 0.0;

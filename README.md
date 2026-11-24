@@ -1,6 +1,6 @@
 # iot-firmware-energy-monitor
 
-Monitor de energia para firmwares ESP32 com sensores INA226 ou INA228. Uma task interna, de prioridade 1 e fixada no `PRO_CPU`, lê corrente e tensão a cada 10 ms e integra as amostras no tempo. A cada leitura, o monitor entrega as medidas da janela, que vai do último reset até a leitura:
+Monitor de energia para firmwares ESP32 com sensores INA226 ou INA228. Uma task interna, de prioridade 1 e fixada no `PRO_CPU`, lê corrente e tensão no intervalo configurado (10 ms por padrão) e integra as amostras no tempo. A cada leitura, o monitor entrega as medidas da janela, que vai do último reset até a leitura:
 
 | Medida | Unidade | Cálculo |
 | --- | --- | --- |
@@ -29,6 +29,9 @@ O firmware sempre instancia `EnergyMonitor`. O argumento `monitoringInSleep` do 
 #include "energy_monitor.h"
 
 static EnergyMonitor Monitor(21, 22);   // SDA, SCL, INA226, endereço 0x40 e Wire por padrão
+
+// O intervalo de amostragem pode ser configurado no último argumento (em ms):
+// static EnergyMonitor Monitor(21, 22, false, 0x40, Wire, 20);
 
 void setup() {
     Serial.begin(115200);

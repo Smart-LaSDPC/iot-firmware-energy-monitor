@@ -43,8 +43,16 @@ class EnergyMonitor {
      * @param monitoringInSleep true para usar o INA228 e medir o deep sleep; false para usar o INA226.
      * @param address Endereço I2C do sensor.
      * @param wire Barramento I2C usado pelo sensor.
+     * @param monitorResolutionMs Intervalo de amostragem, em milissegundos.
      */
-    EnergyMonitor(int pinSda, int pinScl, bool monitoringInSleep = false, uint8_t address = 0x40, TwoWire& wire = Wire);
+    EnergyMonitor(
+        int pinSda,
+        int pinScl,
+        bool monitoringInSleep = false,
+        uint8_t address = 0x40,
+        TwoWire& wire = Wire,
+        unsigned long monitorResolutionMs = 10
+    );
 
     /** @brief Encerra a task de medição, libera o mutex e o sensor. */
     ~EnergyMonitor();
@@ -124,12 +132,12 @@ class EnergyMonitor {
     void stop();
 
     static constexpr uint32_t I2cFrequency = 400000;
-    static constexpr uint32_t MeasurePeriodMs = 10;
     static constexpr uint32_t MeasureTaskStackSize = configMINIMAL_STACK_SIZE + 1024 * 2;
     static constexpr UBaseType_t MeasureTaskPriority = 1;
 
     TwoWire& _wire;
     const bool _monitoringInSleep;
+    unsigned long _monitorResolutionMs;
     std::unique_ptr<EnergyMonitorSensor> _sensor;
     bool _beginCalled = false;
 
