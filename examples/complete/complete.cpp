@@ -24,7 +24,7 @@ void setup() {
     if (Monitor.getSleepConsumption(sleepConsumption)) {
         ESP_LOGI(
             LogTag,
-            "Sleep: %.6f J %.3f mA %.3f V %.6f mAh %.2f s",
+            "Sleep: %.6f J %.3f mA %.3f V %.6f mAh %.2f ms",
             sleepConsumption.energy,
             sleepConsumption.averageCurrent,
             sleepConsumption.averageVoltage,

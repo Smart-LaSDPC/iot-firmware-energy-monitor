@@ -8,7 +8,7 @@ Monitor de energia para firmwares ESP32 com sensores INA226 ou INA228. Uma task 
 | `averageCurrent` | mA | ∫ I dt / T |
 | `averageVoltage` | V | ∫ V dt / T |
 | `accumulatedCharge` | mAh | ∫ I dt / 3600 |
-| `elapsedTime` | s | T |
+| `elapsedTime` | ms | T |
 
 As médias são ponderadas pelo tempo: uma amostra que demorou mais pesa mais. Sem amostras na janela, as médias valem `NaN`.
 
@@ -70,7 +70,7 @@ Com `monitoringInSleep` true, `getSleepConsumption(consumption)` lê a energia e
 
 A janela de sono vai da última amostra anterior ao sono até `begin()` após o wake. Pode incluir até um período de 10 ms antes do sono e o tempo de inicialização até `begin()`. O INA228 consome aproximadamente 0,64 mA em operação contínua durante o sono. O clock lento RTC pode afetar `elapsedTime` e a corrente média calculada. O primeiro boot após power-on não tem medida de sono.
 
-A duração do sono vem do relógio RTC (`esp_rtc_get_time_us()`), que não é alterado por sincronização de hora. Nenhuma chamada é necessária antes de dormir: a task atualiza o snapshot dos acumuladores a cada amostra.
+A duração do sono vem do relógio RTC (`esp_rtc_get_time_us()`), convertida de µs para ms, e não é alterada por sincronização de hora. Nenhuma chamada é necessária antes de dormir: a task atualiza o snapshot dos acumuladores a cada amostra.
 
 ## Dependências
 

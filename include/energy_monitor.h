@@ -19,7 +19,7 @@ struct EnergyMonitorData {
     float averageCurrent;       ///< Corrente média, em mA. NaN se a janela não tem amostras.
     float averageVoltage;       ///< Tensão média do barramento, em V. NaN se a janela não tem amostras.
     float accumulatedCharge;    ///< Corrente acumulada, em mAh.
-    float elapsedTime;          ///< Duração da janela, em s.
+    uint32_t elapsedTime;       ///< Duração da janela, em ms.
 };
 
 /**

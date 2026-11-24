@@ -104,11 +104,13 @@ void CompleteEnergyMonitor::computeSleepConsumption() {
             return;
         }
 
-        this->_sleepConsumption.elapsedTime = dTimeUs * 1e-6;
+        this->_sleepConsumption.elapsedTime = dTimeUs > UINT32_MAX * 1000ULL
+            ? UINT32_MAX
+            : static_cast<uint32_t>(dTimeUs / 1000ULL);
 
         this->_sleepConsumption.energy = dEnergyJ;
         this->_sleepConsumption.accumulatedCharge = dChargeC * 1e3 / SecondsPerHour;
-        this->_sleepConsumption.averageCurrent = dChargeC * 1e3 / this->_sleepConsumption.elapsedTime;
+        this->_sleepConsumption.averageCurrent = dChargeC * 1e3 / (dTimeUs * 1e-6);
         this->_sleepConsumption.averageVoltage = dChargeC > 0.0 ? dEnergyJ / dChargeC : NAN;
 
         this->_sleepConsumptionValid = true;

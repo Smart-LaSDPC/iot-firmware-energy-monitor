@@ -112,7 +112,7 @@ bool EnergyMonitor::getConsumption(EnergyMonitorData& consumption, bool resetWin
 
     ESP_LOGI(
         LogTag,
-        "Consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f s",
+        "Consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f ms",
         consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
         consumption.accumulatedCharge, consumption.elapsedTime
     );
@@ -127,7 +127,7 @@ bool EnergyMonitor::getCycleConsumption(EnergyMonitorData& consumption, bool res
 
     ESP_LOGI(
         LogTag,
-        "Cycle consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh cycle=%.2f s",
+        "Cycle consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh cycle=%.2f ms",
         consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
         consumption.accumulatedCharge, consumption.elapsedTime
     );
@@ -152,7 +152,7 @@ bool EnergyMonitor::getSleepConsumption(EnergyMonitorData& consumption) {
 
     ESP_LOGI(
         LogTag,
-        "Sleep consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f s",
+        "Sleep consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh window=%.2f ms",
         consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
         consumption.accumulatedCharge, consumption.elapsedTime
     );
@@ -198,12 +198,13 @@ void EnergyMonitor::addSleepToWindow() {
             xSemaphoreTake(_measureMutex, portMAX_DELAY);
             _accumulators.energy += sleep.energy;
             _accumulators.charge += sleep.accumulatedCharge * SecondsPerHour / 1e3;
-            _accumulators.voltageTime += sleep.averageVoltage * sleep.elapsedTime;
-            _accumulators.time += sleep.elapsedTime;
+            const double sleepElapsedTimeS = sleep.elapsedTime * 1e-3;
+            _accumulators.voltageTime += sleep.averageVoltage * sleepElapsedTimeS;
+            _accumulators.time += sleepElapsedTimeS;
             xSemaphoreGive(_measureMutex);
 
             ESP_LOGD(
-                LogTag, "Sleep added to the consumption window: energy=%.6f J charge=%.6f mAh sleep=%.2f s",
+                LogTag, "Sleep added to the consumption window: energy=%.6f J charge=%.6f mAh sleep=%.2f ms",
                 sleep.energy, sleep.accumulatedCharge, sleep.elapsedTime
             );
         } else {
@@ -228,7 +229,11 @@ bool EnergyMonitor::readConsumption(MeasureAccumulators& accumulators, EnergyMon
 
     consumption.energy = window.energy;
     consumption.accumulatedCharge = window.charge * 1e3 / SecondsPerHour;
-    consumption.elapsedTime = window.time;
+    if (window.time > static_cast<double>(UINT32_MAX) * 1e-3) {
+        consumption.elapsedTime = UINT32_MAX;
+    } else {
+        consumption.elapsedTime = static_cast<uint32_t>(window.time * 1e3);
+    }
     consumption.averageCurrent = window.time > 0.0 ? window.charge * 1e3 / window.time : NAN;
     consumption.averageVoltage = window.time > 0.0 ? window.voltageTime / window.time : NAN;
     return true;
