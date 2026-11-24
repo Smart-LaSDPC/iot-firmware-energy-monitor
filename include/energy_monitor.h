@@ -65,6 +65,10 @@ class EnergyMonitor {
     /**
      * @brief Lê as medidas da janela atual.
      *
+     * Com monitoringInSleep (INA228), a janela também inclui o consumo dos deep sleeps desde o
+     * último reset dela: begin() soma a medida do último sono uma vez por boot. A janela de ciclo
+     * (getCycleConsumption()) não inclui o sono.
+     *
      * @param consumption Recebe as medidas da janela.
      * @param resetWindow Se true, zera os acumuladores e inicia uma nova janela.
      * @return true se as medidas foram lidas; false se begin() não foi concluído.
@@ -141,6 +145,15 @@ class EnergyMonitor {
     static MeasureAccumulators _cycleAccumulators;     ///< Janela do ciclo, também na memória RTC.
 
     bool readConsumption(MeasureAccumulators& accumulators, EnergyMonitorData& consumption, bool resetWindow);
+
+    /**
+     * @brief Soma em _accumulators a medida do último deep sleep do sensor, quando houver uma válida.
+     * Não mexe em _cycleAccumulators. Chamado por begin() uma única vez por boot.
+     */
+    void addSleepToWindow();
+
+    /** @brief true depois que addSleepToWindow() rodou neste boot, para o sono não ser somado de novo. */
+    bool _sleepAddedToWindow = false;
 
     int _pinSda = 0;
     int _pinScl = 0;

@@ -77,6 +77,10 @@ bool EnergyMonitor::begin() {
         return false;
     }
 
+    if (!_sleepAddedToWindow) {
+        this->addSleepToWindow();
+    }
+
     if (_measureTaskHandle == nullptr && xTaskCreatePinnedToCore(
             this->vTaskMeasureLoop,
             "Energy Measure",
@@ -182,6 +186,32 @@ float EnergyMonitor::getAccumulatedCharge() {
 void EnergyMonitor::resetConsumption() {
     EnergyMonitorData consumption;
     this->readConsumption(_accumulators, consumption, true);
+}
+
+void EnergyMonitor::addSleepToWindow() {
+    EnergyMonitorData sleep = {};
+
+    _sleepAddedToWindow = true;
+
+    if (_sensor->getSleepConsumption(sleep)) {
+        if (!std::isnan(sleep.averageVoltage)) {
+            xSemaphoreTake(_measureMutex, portMAX_DELAY);
+            _accumulators.energy += sleep.energy;
+            _accumulators.charge += sleep.accumulatedCharge * SecondsPerHour / 1e3;
+            _accumulators.voltageTime += sleep.averageVoltage * sleep.elapsedTime;
+            _accumulators.time += sleep.elapsedTime;
+            xSemaphoreGive(_measureMutex);
+
+            ESP_LOGD(
+                LogTag, "Sleep added to the consumption window: energy=%.6f J charge=%.6f mAh sleep=%.2f s",
+                sleep.energy, sleep.accumulatedCharge, sleep.elapsedTime
+            );
+        } else {
+            ESP_LOGW(LogTag, "Sleep not added to the consumption window: no charge measured in sleep");
+        }
+    } else {
+        ESP_LOGD(LogTag, "No sleep consumption to add to the consumption window");
+    }
 }
 
 bool EnergyMonitor::readConsumption(MeasureAccumulators& accumulators, EnergyMonitorData& consumption, bool resetWindow) {
