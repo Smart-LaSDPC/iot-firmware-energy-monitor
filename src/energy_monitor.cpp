@@ -107,7 +107,7 @@ bool EnergyMonitor::begin() {
     ESP_LOGI(
         LogTag,
         "Energy monitor started: sensor=%s SDA=%d SCL=%d period=%lu ms",
-        _monitoringInSleep ? "INA228" : "INA226", _pinSda, _pinScl, _monitorResolutionMs)
+        _monitoringInSleep ? "INA228" : "INA226", _pinSda, _pinScl, _monitorResolutionMs
     );
     return true;
 }
