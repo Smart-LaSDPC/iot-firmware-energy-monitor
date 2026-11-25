@@ -32,7 +32,8 @@ struct EnergyMonitorData {
  *
  * Os acumuladores ficam na memória RTC, então a janela sobrevive ao deep sleep. Por
  * isso só uma instância deve existir: todas compartilham os mesmos acumuladores.
- * Uma segunda janela, a de ciclo, é integrada pela mesma task e lida por getCycleConsumption().
+ * Uma segunda janela, a do wake, é integrada pela mesma task, guardada por saveWakeUpConsumption()
+ * antes do deep sleep e lida no wake seguinte por getWakeUpConsumption().
  */
 class EnergyMonitor {
   public:
@@ -40,18 +41,18 @@ class EnergyMonitor {
      * @brief Define os pinos, o barramento I2C e o sensor usados pelo monitor.
      * @param pinSda Pino SDA do barramento I2C.
      * @param pinScl Pino SCL do barramento I2C.
+     * @param monitorResolutionMs Intervalo de amostragem, em milissegundos.
      * @param monitoringInSleep true para usar o INA228 e medir o deep sleep; false para usar o INA226.
      * @param address Endereço I2C do sensor.
      * @param wire Barramento I2C usado pelo sensor.
-     * @param monitorResolutionMs Intervalo de amostragem, em milissegundos.
      */
     EnergyMonitor(
         int pinSda,
         int pinScl,
+        unsigned long monitorResolutionMs = 10,
         bool monitoringInSleep = false,
         uint8_t address = 0x40,
-        TwoWire& wire = Wire,
-        unsigned long monitorResolutionMs = 10
+        TwoWire& wire = Wire
     );
 
     /** @brief Encerra a task de medição, libera o mutex e o sensor. */
@@ -74,8 +75,8 @@ class EnergyMonitor {
      * @brief Lê as medidas da janela atual.
      *
      * Com monitoringInSleep (INA228), a janela também inclui o consumo dos deep sleeps desde o
-     * último reset dela: begin() soma a medida do último sono uma vez por boot. A janela de ciclo
-     * (getCycleConsumption()) não inclui o sono.
+     * último reset dela: begin() soma a medida do último sono uma vez por boot. A janela do wake
+     * (saveWakeUpConsumption()) não inclui o sono.
      *
      * @param consumption Recebe as medidas da janela.
      * @param resetWindow Se true, zera os acumuladores e inicia uma nova janela.
@@ -84,14 +85,23 @@ class EnergyMonitor {
     bool getConsumption(EnergyMonitorData& consumption, bool resetWindow = true);
 
     /**
-     * @brief Lê as medidas da janela de ciclo, independente da janela de getConsumption().
-     * O ciclo vai do último reset até a leitura, e normalmente é lido uma vez por boot.
+     * @brief Lê e zera a janela do wake, independente da janela de getConsumption(), e guarda o
+     * resultado na memória RTC. Chamar antes do deep sleep: no wake seguinte,
+     * getWakeUpConsumption() devolve esse valor.
      *
-     * @param consumption Recebe as medidas do ciclo.
-     * @param resetCycle Se true, zera os acumuladores do ciclo e inicia um novo.
-     * @return true se as medidas foram lidas; false se begin() não foi concluído.
+     * @return true se o consumo foi guardado; false se begin() não foi concluído ou se a janela
+     * não tem amostras (nada é guardado e o valor anterior é descartado).
      */
-    bool getCycleConsumption(EnergyMonitorData& consumption, bool resetCycle = true);
+    bool saveWakeUpConsumption();
+
+    /**
+     * @brief Lê o consumo do wake anterior, guardado por saveWakeUpConsumption() antes do deep sleep.
+     *
+     * @param consumption Recebe as medidas do wake anterior.
+     * @return true se há um consumo guardado; false após power-on/reset, até o primeiro
+     * saveWakeUpConsumption() com amostras.
+     */
+    bool getWakeUpConsumption(EnergyMonitorData& consumption);
 
     /**
      * @brief Lê o que o INA228 acumulou no último deep sleep.
@@ -150,13 +160,15 @@ class EnergyMonitor {
     };
 
     static MeasureAccumulators _accumulators;          ///< Janela atual; fica na memória RTC para sobreviver ao deep sleep.
-    static MeasureAccumulators _cycleAccumulators;     ///< Janela do ciclo, também na memória RTC.
+    static MeasureAccumulators _wakeUpAccumulators;    ///< Janela do wake, também na memória RTC.
+    static EnergyMonitorData _savedWakeUpConsumption;  ///< Wake guardado por saveWakeUpConsumption() (RTC).
+    static bool _hasSavedWakeUpConsumption;            ///< _savedWakeUpConsumption tem valor (RTC).
 
     bool readConsumption(MeasureAccumulators& accumulators, EnergyMonitorData& consumption, bool resetWindow);
 
     /**
      * @brief Soma em _accumulators a medida do último deep sleep do sensor, quando houver uma válida.
-     * Não mexe em _cycleAccumulators. Chamado por begin() uma única vez por boot.
+     * Não mexe em _wakeUpAccumulators. Chamado por begin() uma única vez por boot.
      */
     void addSleepToWindow();
 

@@ -28,10 +28,10 @@ O firmware sempre instancia `EnergyMonitor`. O argumento `monitoringInSleep` do 
 ```cpp
 #include "energy_monitor.h"
 
-static EnergyMonitor Monitor(21, 22);   // SDA, SCL, INA226, endereço 0x40 e Wire por padrão
+static EnergyMonitor Monitor(21, 22);   // SDA, SCL; 10 ms, INA226, endereço 0x40 e Wire por padrão
 
-// O intervalo de amostragem pode ser configurado no último argumento (em ms):
-// static EnergyMonitor Monitor(21, 22, false, 0x40, Wire, 20);
+// O intervalo de amostragem (em ms) é o terceiro argumento:
+// static EnergyMonitor Monitor(21, 22, 20);
 
 void setup() {
     Serial.begin(115200);
@@ -51,11 +51,12 @@ void loop() {
 - `getConsumption(consumption, resetWindow = true)`: lê todas as medidas; com `resetWindow`, zera os acumuladores.
 - `getEnergy()`, `getAverageCurrent()`, `getAverageVoltage()`, `getAccumulatedCharge()`: leem uma medida sem iniciar nova janela. Retornam `NaN` antes de `begin()`.
 - `resetConsumption()`: inicia uma nova janela sem ler.
-- `getCycleConsumption(consumption, resetCycle = true)`: lê a janela de ciclo, independente da janela de `getConsumption()`.
+- `saveWakeUpConsumption()`: lê e zera a janela do wake (independente da janela de `getConsumption()`) e guarda o resultado na memória RTC. Chame antes do deep sleep.
+- `getWakeUpConsumption(consumption)`: lê o consumo do wake anterior, guardado por `saveWakeUpConsumption()`. Retorna `false` após power-on/reset, até o primeiro save com amostras.
 - `getSleepConsumption(consumption)`: lê o que o INA228 acumulou no último deep sleep (ver abaixo). Com `monitoringInSleep` false, sempre retorna `false`.
 - `isMonitoringInSleep()`: `true` quando o monitor usa o INA228.
 
-Para o INA228, passe `true` em `monitoringInSleep`: `EnergyMonitor Monitor(21, 22, true);`. O resto da API é igual.
+Para o INA228, passe `true` em `monitoringInSleep`, depois do intervalo: `EnergyMonitor Monitor(21, 22, 10, true);`. O resto da API é igual.
 
 ## Configuração do INA226
 

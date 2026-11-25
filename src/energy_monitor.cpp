@@ -19,15 +19,17 @@ static EnergyMonitorSensor* createSensor(bool monitoringInSleep, uint8_t address
 }
 
 RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_accumulators = {};
-RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_cycleAccumulators = {};
+RTC_DATA_ATTR EnergyMonitor::MeasureAccumulators EnergyMonitor::_wakeUpAccumulators = {};
+RTC_DATA_ATTR EnergyMonitorData EnergyMonitor::_savedWakeUpConsumption = {};
+RTC_DATA_ATTR bool EnergyMonitor::_hasSavedWakeUpConsumption = false;
 
 EnergyMonitor::EnergyMonitor(
     int pinSda,
     int pinScl,
+    unsigned long monitorResolutionMs,
     bool monitoringInSleep,
     uint8_t address,
-    TwoWire& wire,
-    unsigned long monitorResolutionMs
+    TwoWire& wire
 )
     : _wire(wire),
       _monitoringInSleep(monitoringInSleep),
@@ -127,17 +129,45 @@ bool EnergyMonitor::getConsumption(EnergyMonitorData& consumption, bool resetWin
     return true;
 }
 
-bool EnergyMonitor::getCycleConsumption(EnergyMonitorData& consumption, bool resetCycle) {
-    if (!this->readConsumption(_cycleAccumulators, consumption, resetCycle)) {
-        ESP_LOGE(LogTag, "Cycle consumption read failed: monitor not started");
+bool EnergyMonitor::saveWakeUpConsumption() {
+    EnergyMonitorData consumption = {};
+
+    if (!this->readConsumption(_wakeUpAccumulators, consumption, true)) {
+        ESP_LOGE(LogTag, "Wake up consumption not saved: monitor not started");
         return false;
     }
 
+    if (consumption.elapsedTime == 0) {
+        _hasSavedWakeUpConsumption = false;
+        ESP_LOGW(LogTag, "Wake up consumption not saved: wake window has no samples");
+        return false;
+    }
+
+    _savedWakeUpConsumption = consumption;
+    _hasSavedWakeUpConsumption = true;
+
     ESP_LOGI(
         LogTag,
-        "Cycle consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh cycle=%.2f ms",
+        "Wake up consumption saved: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh wake=%lu ms",
         consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
-        consumption.accumulatedCharge, consumption.elapsedTime
+        consumption.accumulatedCharge, static_cast<unsigned long>(consumption.elapsedTime)
+    );
+    return true;
+}
+
+bool EnergyMonitor::getWakeUpConsumption(EnergyMonitorData& consumption) {
+    if (!_hasSavedWakeUpConsumption) {
+        ESP_LOGD(LogTag, "Wake up consumption unavailable: none saved since power-on");
+        return false;
+    }
+
+    consumption = _savedWakeUpConsumption;
+
+    ESP_LOGI(
+        LogTag,
+        "Wake up consumption read: energy=%.6f J current=%.3f mA voltage=%.3f V charge=%.6f mAh wake=%lu ms",
+        consumption.energy, consumption.averageCurrent, consumption.averageVoltage,
+        consumption.accumulatedCharge, static_cast<unsigned long>(consumption.elapsedTime)
     );
     return true;
 }
@@ -268,10 +298,10 @@ void EnergyMonitor::vTaskMeasureLoop(void* pvParameters) {
             _accumulators.voltageTime += voltage * dt;
             _accumulators.time += dt;
 
-            _cycleAccumulators.energy += voltage * current * dt;
-            _cycleAccumulators.charge += current * dt;
-            _cycleAccumulators.voltageTime += voltage * dt;
-            _cycleAccumulators.time += dt;
+            _wakeUpAccumulators.energy += voltage * current * dt;
+            _wakeUpAccumulators.charge += current * dt;
+            _wakeUpAccumulators.voltageTime += voltage * dt;
+            _wakeUpAccumulators.time += dt;
             self->_sensor->onSample();
         }
         xSemaphoreGive(self->_measureMutex);

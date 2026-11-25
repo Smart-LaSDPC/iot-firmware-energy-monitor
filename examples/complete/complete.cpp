@@ -8,9 +8,10 @@
 static constexpr const char* LogTag = "Example";
 static constexpr int PinSda = 21;
 static constexpr int PinScl = 22;
+static constexpr unsigned long MonitorResolutionMs = 10;
 static constexpr bool MonitoringInSleep = true;
 
-static EnergyMonitor Monitor(PinSda, PinScl, MonitoringInSleep);
+static EnergyMonitor Monitor(PinSda, PinScl, MonitorResolutionMs, MonitoringInSleep);
 
 void setup() {
     Serial.begin(115200);
@@ -35,15 +36,17 @@ void setup() {
         ESP_LOGI(LogTag, "No valid INA228 sleep consumption");
     }
 
-    EnergyMonitorData cycleConsumption;
-    if (Monitor.getCycleConsumption(cycleConsumption)) {
-        ESP_LOGI(LogTag, "Cycle: %.6f J %.6f mAh", cycleConsumption.energy, cycleConsumption.accumulatedCharge);
+    EnergyMonitorData wakeUpConsumption;
+    if (Monitor.getWakeUpConsumption(wakeUpConsumption)) {
+        ESP_LOGI(LogTag, "Previous wake: %.6f J %.6f mAh", wakeUpConsumption.energy, wakeUpConsumption.accumulatedCharge);
     }
 
     vTaskDelay(pdMS_TO_TICKS(3000));
 }
 
 void loop() {
+    Monitor.saveWakeUpConsumption();
+
     ESP_LOGI(LogTag, "Entering deep sleep");
     esp_deep_sleep(10ULL * 1000000ULL);
 }
